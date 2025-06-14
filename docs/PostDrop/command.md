@@ -1,6 +1,6 @@
 ---
-title: 开始
-sidebar_position: 3
+title: 命令
+sidebar_position: 2
 ---
 
 # 命令
