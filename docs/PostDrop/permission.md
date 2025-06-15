@@ -1,6 +1,6 @@
 ---
 title: 权限
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 # 权限
