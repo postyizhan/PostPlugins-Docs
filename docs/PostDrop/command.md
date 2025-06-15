@@ -1,5 +1,5 @@
 ---
-title: 开始
+title: 命令
 sidebar_position: 3
 ---
 

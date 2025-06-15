@@ -59,18 +59,29 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'PostPlugins-Docs',
-        logo: {
-          alt: 'Logo',
-          src: 'img/logo.svg',
-        },
-        hideOnScroll: false,
+        title: 'Post',
+        hideOnScroll: true,
         items: [
           {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: '开始',
+            label: '文档',
+          },
+          {
+            type: 'dropdown',
+            label: '插件',
+            position: 'left',
+            items: [
+              {
+                label: 'PostSpawner',
+                to: '/PostSpawner/intro',
+              },
+              {
+                label: 'PostDrop',
+                to: '/PostDrop/intro',
+              },
+            ],
           },
           // 搜索框
           {
@@ -79,8 +90,9 @@ const config = {
           },
           {
             href: 'https://github.com/postyizhan/PostPlugins-Docs',
-            label: 'GitHub',
             position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub 仓库',
           },
           {
             type: 'localeDropdown',
@@ -98,6 +110,14 @@ const config = {
               {
                 label: '开始',
                 to: '/intro',
+              },
+              {
+                label: 'PostSpawner',
+                to: '/PostSpawner/intro',
+              },
+              {
+                label: 'PostDrop',
+                to: '/PostDrop/intro',
               },
             ],
           },
