@@ -310,29 +310,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-  margin: 0 0.5rem;
-  background: rgba(0, 0, 0, 0.04);
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 0.25rem;
+  color: var(--ifm-navbar-link-color);
+  background: transparent;
   border: none;
   border-radius: 50%;
-  color: var(--ifm-navbar-link-color);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 [data-theme='dark'] .themeToggle {
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--ifm-navbar-link-color);
 }
 
 .themeToggle:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
 }
 
 [data-theme='dark'] .themeToggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 在移动端隐藏主题切换按钮 */
+@media (max-width: 768px) {
+  .themeToggle {
+    display: none;
+  }
 }
 
 /* 搜索框 */
@@ -416,12 +422,30 @@
 
 /* 响应式样式 */
 @media (max-width: 768px) {
+  .navbarContainer {
+    padding: 0 1rem;
+  }
+
+  .navbarTitle {
+    font-size: 1.1rem;
+  }
+  
+  .searchWrapper {
+    margin-left: auto;
+  }
+  
   .customSearchInput {
-    width: 180px;
+    width: 140px;
+    height: 2.2rem;
+    font-size: 0.85rem;
   }
   
   .customSearchInput:focus {
-    width: 220px;
+    width: 180px;
+  }
+  
+  .githubLink {
+    display: none;
   }
 }
 
@@ -606,24 +630,39 @@
   margin: 0 auto;
 }
 
+/* 移动端菜单项 */
 .mobileMenuItem {
   display: flex;
-  align-items: flex-start;
-  padding: 0.8rem;
-  border-radius: 6px;
-  color: var(--ifm-menu-color);
+  align-items: center;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-900);
   font-weight: 500;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s ease;
   text-decoration: none;
-  background-color: transparent;
-  border: 1px solid var(--ifm-toc-border-color);
+  transition: all 0.2s ease;
+}
+
+[data-theme='dark'] .mobileMenuItem {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .mobileMenuItem:hover {
-  background-color: var(--ifm-hover-overlay);
+  background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
   text-decoration: none;
+}
+
+[data-theme='dark'] .mobileMenuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.mobileMenuItemActive {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
 }
 
 .mobileMenuItemContent {
@@ -659,26 +698,41 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem;
-  border-radius: 6px;
-  background-color: transparent;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-100);
   border: 1px solid var(--ifm-toc-border-color);
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .mobileMenuHeader {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .mobileMenuHeader:hover {
-  background-color: var(--ifm-hover-overlay);
+  background-color: var(--ifm-color-emphasis-200);
 }
 
-.mobileMenuHeader span {
-  font-weight: 600;
+[data-theme='dark'] .mobileMenuHeader:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobileMenuArrow {
+  transition: transform 0.2s ease;
+}
+
+.mobileMenuArrow.dropdownArrowOpen {
+  transform: rotate(180deg);
 }
 
 /* 移动菜单中的子菜单项 */
 .mobileSubmenuItems {
-  margin-top: 0.75rem;
-  padding-left: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
   animation: submenuFadeIn 0.2s ease;
 }
 
@@ -842,7 +896,7 @@
   }
   
   .searchWrapper {
-    display: none;
+    margin-left: auto;
   }
 }
 
@@ -1048,66 +1102,34 @@
   }
 }
 
-/* 移动菜单项 */
-.mobileMenuItem {
+/* 移动端子菜单项 */
+.mobileSimpleItem {
   display: flex;
-  align-items: flex-start;
-  padding: 0.8rem;
-  border-radius: 6px;
-  color: var(--ifm-menu-color);
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s ease;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-900);
   text-decoration: none;
-  background-color: transparent;
-  border: 1px solid var(--ifm-toc-border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.mobileMenuItem:hover {
-  background-color: var(--ifm-hover-overlay);
+[data-theme='dark'] .mobileSimpleItem {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mobileSimpleItem:hover {
+  background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
   text-decoration: none;
 }
 
-.mobileMenuItemContent {
-  flex: 1;
-}
-
-.mobileMenuItemHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-}
-
-.mobileMenuItemHeader h4 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0;
-  color: var(--ifm-heading-color);
-}
-
-.mobileMenuItemContent p {
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--ifm-color-emphasis-700);
-  margin: 0;
-}
-
-.mobileMenuHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem;
-  border-radius: 6px;
-  background-color: transparent;
-  border: 1px solid var(--ifm-toc-border-color);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mobileMenuHeader:hover {
-  background-color: var(--ifm-hover-overlay);
+[data-theme='dark'] .mobileSimpleItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--ifm-color-primary-lighter);
 }
 
 /* 全宽通铺下拉菜单 */
@@ -1974,4 +1996,132 @@
 .noResults p {
   font-size: 0.95rem;
   margin: 0;
+}
+
+.mobileSimpleItem {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-900);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.mobileSimpleItem:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+[data-theme='dark'] .mobileSimpleItem {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='dark'] .mobileSimpleItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.mobileSimpleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+[data-theme='dark'] .mobileSimpleIcon {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.mobileSimpleContent {
+  flex: 1;
+}
+
+.mobileSimpleContent h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 0.25rem;
+}
+
+.mobileSimpleContent p {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+}
+
+.mobileMenuArrow {
+  transition: transform 0.2s ease;
+}
+
+.mobileMenuArrow.dropdownArrowOpen {
+  transform: rotate(180deg);
+}
+
+/* 移动端菜单中的搜索框 */
+.mobileMenuSection .customSearchForm {
+  width: 100%;
+  margin: 0.5rem 0 1rem;
+}
+
+.mobileMenuSection .customSearchInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.mobileMenuSection .customSearchInput {
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 1rem 0 2.8rem;
+  font-size: 0.9rem;
+  background-color: rgba(240, 242, 245, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  color: var(--ifm-font-color-base);
+  transition: all 0.3s;
+}
+
+[data-theme='dark'] .mobileMenuSection .customSearchInput {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.mobileMenuSection .customSearchInput:focus {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  outline: none;
+}
+
+[data-theme='dark'] .mobileMenuSection .customSearchInput:focus {
+  background-color: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+}
+
+.mobileMenuSection .customSearchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ifm-color-emphasis-500);
+  opacity: 0.7;
+}
+
+[data-theme='dark'] .mobileMenuSection .customSearchIcon {
+  color: rgba(255, 255, 255, 0.8);
 } 

@@ -436,37 +436,6 @@ function CustomNavbar() {
             )}
           </button>
 
-          <div className={styles.searchWrapper}>
-            <form 
-              className={styles.customSearchForm} 
-              onSubmit={(e) => {
-                e.preventDefault();
-                const searchQuery = e.target.querySelector('input').value.trim();
-                if (searchQuery) {
-                  const baseUrl = siteConfig.baseUrl || '/';
-                  const encodedQuery = encodeURIComponent(searchQuery);
-                  const searchUrl = `${baseUrl}search?q=${encodedQuery}`;
-                  history.push(searchUrl);
-                }
-              }}
-            >
-              <div className={styles.customSearchInputWrapper}>
-                <input
-                  type="search"
-                  placeholder="搜索文档..."
-                  aria-label="搜索文档"
-                  className={styles.customSearchInput}
-                />
-                <div className={styles.customSearchIcon}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-            </form>
-          </div>
-
           {/* GitHub 链接 */}
           <Link
             to="https://github.com/postyizhan/PostPlugins-Docs"
@@ -494,45 +463,105 @@ function CustomNavbar() {
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <div className={styles.mobileMenuBackdrop}></div>
         <div className={styles.mobileMenuItems}>
-          {navItems.map((item, i) => (
-            item.items ? (
-              <div key={i} className={styles.mobileSubmenu}>
-                <div className={styles.mobileMenuHeader}>
-                  {item.label}
-                  <svg className={styles.mobileMenuArrow} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          {/* 移动端搜索框 */}
+          <div className={styles.mobileMenuSection}>
+            <div className={styles.mobileMenuSectionTitle}>搜索</div>
+            <form 
+              className={styles.customSearchForm} 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const searchQuery = e.target.querySelector('input').value.trim();
+                if (searchQuery) {
+                  const baseUrl = siteConfig.baseUrl || '/';
+                  const encodedQuery = encodeURIComponent(searchQuery);
+                  const searchUrl = `${baseUrl}search?q=${encodedQuery}`;
+                  history.push(searchUrl);
+                  setIsMenuOpen(false);
+                }
+              }}
+            >
+              <div className={styles.customSearchInputWrapper}>
+                <input
+                  type="search"
+                  placeholder="搜索文档..."
+                  aria-label="搜索文档"
+                  className={styles.customSearchInput}
+                />
+                <div className={styles.customSearchIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                <div className={styles.mobileSubmenuItems}>
-                  {item.items.map((subItem, j) => (
-                    <Link
-                      key={j}
-                      to={subItem.to}
-                      className={styles.mobileSimpleItem}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <div className={styles.mobileSimpleIcon}>
-                        {subItem.icon}
-                      </div>
-                      <div className={styles.mobileSimpleContent}>
-                        <h4>{subItem.label}</h4>
-                        <p>{subItem.description}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
               </div>
-            ) : (
+            </form>
+          </div>
+          
+          <div className={styles.mobileMenuDivider}></div>
+          
+          {/* 开始链接 */}
+          <Link
+            to="/intro"
+            className={`${styles.mobileMenuItem} ${isActive('/intro') ? styles.mobileMenuItemActive : ''}`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            开始
+          </Link>
+          
+          {/* 插件菜单标题 - 只用于显示和切换 */}
+          <div 
+            className={styles.mobileMenuHeader}
+            onClick={() => setOpenDropdown(openDropdown === 'plugins' ? null : 'plugins')}
+          >
+            插件
+            <svg className={`${styles.mobileMenuArrow} ${openDropdown === 'plugins' ? styles.dropdownArrowOpen : ''}`} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          
+          {/* 插件子菜单 - 条件渲染 */}
+          {openDropdown === 'plugins' && (
+            <div className={styles.mobileSubmenuItems}>
+              {/* PostSpawner */}
               <Link
-                key={i}
-                to={item.to}
-                className={`${styles.mobileMenuItem} ${isActive(item.to) ? styles.mobileMenuItemActive : ''}`}
+                to="/PostSpawner/intro"
+                className={styles.mobileSimpleItem}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.label}
+                <div className={styles.mobileSimpleIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  </svg>
+                </div>
+                <div className={styles.mobileSimpleContent}>
+                  <h4>PostSpawner</h4>
+                  <p>刷怪笼控制插件</p>
+                </div>
               </Link>
-            )
-          ))}
+              
+              {/* PostDrop */}
+              <Link
+                to="/PostDrop/intro"
+                className={styles.mobileSimpleItem}
+                
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className={styles.mobileSimpleIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 7L12 3L4 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M20 12L12 16L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div className={styles.mobileSimpleContent}>
+                  <h4>PostDrop</h4>
+                  <p>物品丢弃保护插件</p>
+                </div>
+              </Link>
+            </div>
+          )}
           
           <div className={styles.mobileMenuDivider}></div>
           

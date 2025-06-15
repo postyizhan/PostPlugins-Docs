@@ -186,6 +186,13 @@
   color: var(--ifm-color-primary);
 }
 
+/* 在移动端隐藏下滑按钮 */
+@media (max-width: 768px) {
+  .scrollDown {
+    display: none;
+  }
+}
+
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateX(-50%) translateY(0);
