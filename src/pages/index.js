@@ -1,29 +1,28 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import { useColorMode } from '@docusaurus/theme-common';
+import ModrinthFetcher from '../components/ResourceComponents/ModrinthFetcher';
 
 import styles from './index.module.css';
 
-// 插件数据
+// 插件数据 - 使用Modrinth项目ID
 const plugins = [
   {
     title: 'PostSpawner',
+    projectId: 'postspawner', // Modrinth项目ID
     description: '全面而强大的刷怪笼控制插件，支持精准采集、自定义掉落、权限管理等功能，让您对刷怪笼有完全掌控。',
     link: '/PostSpawner/intro',
-    version: '1.0.0',
     tags: ['刷怪笼', '掉落物', '权限'],
-    emoji: '🧱'
   },
   {
     title: 'PostDrop',
+    projectId: 'postdrop', // Modrinth项目ID
     description: '实用的物品丢弃保护插件，防止其他玩家拾取您丢弃的物品，支持物品高亮、可见性控制等功能。',
     link: '/PostDrop/intro',
-    version: '1.0.0',
     tags: ['物品', '保护', '高亮'],
-    emoji: '🎒'
   }
 ];
 
@@ -325,6 +324,62 @@ function HomepageBanner() {
   );
 }
 
+function PluginCard({ plugin }) {
+  const [modrinthData, setModrinthData] = useState(null);
+  
+  // 处理数据加载完成后的回调
+  const handleDataLoaded = (data) => {
+    console.log('Modrinth数据加载完成:', data);
+    setModrinthData(data);
+  };
+  
+  return (
+    <div className={styles.pluginCard}>
+      <ModrinthFetcher
+        projectId={plugin.projectId}
+        onDataLoaded={handleDataLoaded}
+      >
+        {/* 这里为空，因为ModrinthFetcher会调用onDataLoaded回调 */}
+      </ModrinthFetcher>
+      
+      <div className={styles.pluginCardHeader}>
+        {modrinthData?.icon_url ? (
+          <img 
+            src={modrinthData.icon_url} 
+            alt={`${plugin.title} icon`} 
+            className={styles.pluginCardIcon} 
+          />
+        ) : (
+          <div className={styles.pluginCardIconPlaceholder}>{plugin.title.charAt(0)}</div>
+        )}
+        <div>
+          <h3 className={styles.pluginCardTitle}>{plugin.title}</h3>
+          <span className={styles.pluginCardVersion}>
+            {modrinthData?.versions && modrinthData.versions.length > 0 
+              ? `v${modrinthData.versions[0].version_number}` 
+              : 'v?.?.?'}
+          </span>
+        </div>
+      </div>
+      
+      <p className={styles.pluginCardDescription}>
+        {plugin.description}
+      </p>
+      
+      <div className={styles.pluginCardFooter}>
+        <div className={styles.pluginCardTags}>
+          {plugin.tags.map((tag, tagIdx) => (
+            <span key={tagIdx} className={styles.pluginCardTag}>{tag}</span>
+          ))}
+        </div>
+        <Link className={styles.pluginCardButton} to={plugin.link}>
+          查看文档
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 function PluginSection() {
   return (
     <section className={styles.section} id="plugins">
@@ -338,30 +393,7 @@ function PluginSection() {
         
         <div className={styles.pluginGrid}>
           {plugins.map((plugin, idx) => (
-            <div key={idx} className={styles.pluginCard}>
-              <div className={styles.pluginCardHeader}>
-                <div className={styles.pluginCardIcon}>{plugin.emoji}</div>
-                <div>
-                  <h3 className={styles.pluginCardTitle}>{plugin.title}</h3>
-                  <span className={styles.pluginCardVersion}>v{plugin.version}</span>
-                </div>
-              </div>
-              
-              <p className={styles.pluginCardDescription}>
-                {plugin.description}
-              </p>
-              
-              <div className={styles.pluginCardFooter}>
-                <div className={styles.pluginCardTags}>
-                  {plugin.tags.map((tag, tagIdx) => (
-                    <span key={tagIdx} className={styles.pluginCardTag}>{tag}</span>
-                  ))}
-                </div>
-                <Link className={styles.pluginCardButton} to={plugin.link}>
-                  查看文档
-                </Link>
-              </div>
-            </div>
+            <PluginCard key={idx} plugin={plugin} />
           ))}
         </div>
       </div>

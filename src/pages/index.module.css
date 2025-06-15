@@ -393,11 +393,25 @@
 }
 
 .pluginCardIcon {
-  font-size: 2.25rem;
-  color: var(--ifm-color-primary);
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  margin-right: 16px;
+  object-fit: cover;
+}
+
+.pluginCardIconPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  margin-right: 16px;
+  background-color: var(--ifm-color-primary);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .pluginCardTitle {
