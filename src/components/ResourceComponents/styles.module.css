@@ -1,0 +1,953 @@
+/* 资源页面整体样式 */
+.resourcePageWrapper {
+  background-color: var(--ifm-background-color);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: none;
+}
+
+/* 全宽header容器 */
+.resourceHeaderFull {
+  width: 100%;
+  position: relative;
+  background-color: var(--ifm-color-primary);
+  overflow: hidden;
+}
+
+/* 资源头部样式 */
+.resourceHeader {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  padding: 0;
+  position: relative;
+  width: 100%;
+  max-width: none;
+}
+
+.resourceHeaderBackdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: linear-gradient(120deg, #2563eb, #3b82f6, #60a5fa);
+  width: 100%;
+}
+
+[data-theme='dark'] .resourceHeaderBackdrop {
+  background: linear-gradient(120deg, #1e40af, #1d4ed8, #2563eb);
+}
+
+/* 头部模糊发光效果 */
+.headerGlow {
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+  top: -50%;
+  left: 20%;
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: blur(40px);
+}
+
+/* 资源头部内容 */
+.resourceHeaderInner {
+  position: relative;
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* 资源图标 */
+.resourceIcon {
+  width: 7rem;
+  height: 7rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.resourceIcon img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.placeholderIcon {
+  width: 100%;
+  height: 100%;
+  background-color: var(--ifm-color-primary-lighter);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* 资源元数据 */
+.resourceMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.resourceTitle {
+  margin: 0 0 0.75rem;
+  font-size: 2.25rem;
+  color: white;
+  word-break: break-word;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.resourceDescription {
+  margin: 0 0 1.25rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 700px;
+  line-height: 1.5;
+}
+
+/* 元数据信息行 */
+.resourceMetaInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.35rem 0.75rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.metaItem svg {
+  opacity: 0.9;
+}
+
+.metaItem.category {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+}
+
+/* 资源操作区域 */
+.resourceActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: white;
+  color: var(--ifm-color-primary);
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+}
+
+.downloadButton:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: var(--ifm-color-primary-darker);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.85rem;
+  height: 2.85rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  backdrop-filter: blur(4px);
+}
+
+.actionButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 资源内容区域 */
+.resourceContent {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+  margin: 0 auto;
+  gap: 2.5rem;
+  align-items: flex-start; /* 确保侧边栏能正确粘附 */
+  position: relative; /* 为sticky定位提供参照 */
+  min-height: 80vh; /* 确保内容区域足够高，侧边栏能有足够空间跟随滚动 */
+}
+
+.resourceContentLeft {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem 0;
+  position: relative; /* 为嵌套内容提供定位参照 */
+}
+
+/* 资源页面的右侧边栏 */
+.resourcePageSidebar {
+  position: -webkit-sticky !important; /* Safari 支持 */
+  position: sticky !important;
+  top: calc(var(--ifm-navbar-height) + 1rem) !important;
+  max-height: calc(100vh - var(--ifm-navbar-height) - 2rem) !important;
+  overflow-y: auto !important;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  width: 280px;
+  flex: 0 0 280px;
+  /* 添加平滑滚动效果 */
+  scroll-behavior: smooth;
+  /* 确保z-index合适 */
+  z-index: 10 !important;
+  /* 添加过渡动画 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  align-self: flex-start !important;
+  will-change: transform, position;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  
+  /* 隐藏滚动条但保持滚动功能 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* 为Webkit浏览器隐藏滚动条 */
+.resourcePageSidebar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  background: transparent;
+}
+
+/* 侧边栏导航组件 */
+.resourceSidebarNavigation {
+  background-color: var(--ifm-background-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+}
+
+/* 侧边栏标题 */
+.sidebarNavigationTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 1.25rem 1.5rem;
+  margin: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary);
+}
+
+/* 侧边栏列表 */
+.sidebarNavigationList {
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+
+.sidebarNavigationItem {
+  margin: 0;
+}
+
+.sidebarNavigationLink {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebarNavigationLink:hover {
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.sidebarNavigationLinkActive {
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+  border-left-color: var(--ifm-color-primary);
+  font-weight: 500;
+}
+
+/* 侧边栏卡片样式 */
+.resourceSidebarCard {
+  background-color: var(--ifm-background-surface-color);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebarCardTitle {
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 0.85rem;
+  color: var(--ifm-heading-color);
+}
+
+/* 兼容性部分样式 */
+.compatibilitySection {
+  margin-bottom: 1.25rem;
+}
+
+.compatibilitySectionTitle {
+  font-size: 0.9rem;
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.versionTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.versionTag {
+  background-color: var(--ifm-color-emphasis-100);
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-800);
+  font-weight: 500;
+}
+
+/* 平台部分样式 */
+.platformsSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.platformTag {
+  background-color: var(--ifm-color-emphasis-100);
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-800);
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* 链接部分样式 */
+.linksSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resourceLink {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.resourceLink:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  text-decoration: none;
+  color: var(--ifm-color-primary);
+  transform: translateX(3px);
+}
+
+/* 资源页面选项卡 */
+.resourceTabs {
+  display: flex;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+}
+
+.tabButton {
+  border: none;
+  background: transparent;
+  padding: 0.85rem 0.5rem;
+  color: var(--ifm-font-color-base);
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.tabButton:hover {
+  color: var(--ifm-color-primary);
+}
+
+.activeTab {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.resourceTabContent {
+  margin-top: 1.75rem;
+}
+
+/* 功能列表样式 */
+.featuresList {
+  margin-top: 2.5rem;
+}
+
+.featuresTitle {
+  font-size: 1.6rem;
+  margin-bottom: 1.75rem;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.25rem;
+  background-color: var(--ifm-background-surface-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featureItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.featureItem svg {
+  color: var(--ifm-color-primary);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 3px;
+}
+
+/* 截图画廊样式 */
+.screenshotGallery {
+  margin-top: 3rem;
+}
+
+.galleryTitle {
+  font-size: 1.6rem;
+  margin-bottom: 1.75rem;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+}
+
+.screenshotGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.screenshotItem {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.screenshotItem:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.screenshotItem img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* 作者部分样式 */
+.authorsSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.authorItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.authorAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorAvatarPlaceholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.authorName {
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-800);
+  font-weight: 500;
+}
+
+.noData {
+  font-style: italic;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 996px) {
+  .resourceContent {
+    flex-direction: column;
+    padding: 0 1.5rem;
+  }
+  
+  .resourcePageSidebar {
+    display: none; /* 在小屏幕上隐藏右侧导航栏 */
+  }
+  
+  .resourceHeaderInner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+  }
+  
+  .resourceActions {
+    margin-left: 0;
+    margin-top: 1.25rem;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resourceIcon {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+  
+  .resourceTitle {
+    font-size: 1.85rem;
+  }
+  
+  .resourceDescription {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .resourceHeaderInner {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .resourceTitle {
+    font-size: 1.7rem;
+  }
+  
+  .screenshotGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resourceContent {
+    padding: 0 1rem;
+  }
+}
+
+/* 资源页面的其他样式 */
+
+/* 右侧导航栏导航状态 */
+.resourcePageSidebar.is-navigating {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+/* 高亮动画效果 */
+@keyframes highlightFade {
+  0% { background-color: rgba(59, 130, 246, 0.1); }
+  100% { background-color: transparent; }
+}
+
+.highlight-section {
+  animation: highlightFade 2s ease-out;
+  border-radius: 6px;
+}
+
+[data-theme='dark'] .highlight-section {
+  animation-name: highlightFadeDark;
+}
+
+@keyframes highlightFadeDark {
+  0% { background-color: rgba(59, 130, 246, 0.2); }
+  100% { background-color: transparent; }
+}
+
+/* 下拉菜单容器 */
+.dropdownContainer {
+  position: relative;
+}
+
+/* 下拉菜单 */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background-color: var(--ifm-background-surface-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+[data-theme='dark'] .dropdown {
+  background-color: var(--ifm-color-emphasis-100);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 下拉菜单标题 */
+.dropdownHeader {
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* 下拉菜单项 */
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  text-decoration: none;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.dropdownItem svg {
+  color: var(--ifm-color-primary);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 更新日志样式 */
+.changelogEntry {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.changelogEntry:last-child {
+  border-bottom: none;
+}
+
+.changelogEntry h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.versionDate {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: normal;
+}
+
+.changelogBody {
+  line-height: 1.6;
+}
+
+/* 版本历史容器 */
+.versionsContent {
+  margin-top: 1rem;
+}
+
+/* 版本历史标题 */
+.versionsContent h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-heading-color);
+  font-weight: 600;
+}
+
+/* 自定义版本卡片列表 */
+.versionCardList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+/* 版本卡片 - 全新设计 */
+.versionCard {
+  display: flex;
+  background-color: var(--ifm-background-surface-color);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.versionCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+/* 版本左侧信息 */
+.versionMeta {
+  padding: 1.25rem;
+  min-width: 180px;
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--ifm-color-emphasis-50);
+}
+
+.versionNumber {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.versionDate {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.versionDate svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+/* 版本内容区 */
+.versionContent {
+  flex: 1;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 版本信息部分 */
+.versionInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* 版本信息项 */
+.versionInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 版本信息标签 */
+.versionInfoLabel {
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* 版本标签列表 */
+.versionTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 版本标签 */
+.versionTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-700);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.versionTag:hover {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+/* 版本操作区 */
+.versionActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--ifm-color-emphasis-200);
+}
+
+/* 版本按钮 */
+.versionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+}
+
+.versionDownloadButton {
+  background-color: var(--ifm-color-primary);
+  color: white;
+}
+
+.versionDownloadButton:hover {
+  background-color: var(--ifm-color-primary-dark);
+  text-decoration: none;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* 暗色模式调整 */
+[data-theme='dark'] .versionCard {
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .versionCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .versionMeta {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .versionTag {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+}
+
+[data-theme='dark'] .versionTag:hover {
+  background-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .versionActions {
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .versionCard {
+    flex-direction: column;
+  }
+  
+  .versionMeta {
+    border-right: none;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    min-width: auto;
+  }
+}

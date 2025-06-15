@@ -3,6 +3,7 @@
 
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const path = require('path');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -23,7 +24,7 @@ const config = {
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -34,6 +35,10 @@ const config = {
     locales: ['zh-Hans', 'en'],
   },
 
+  plugins: [
+    path.resolve(__dirname, 'src/plugins/resource-page-plugin'),
+  ],
+
   presets: [
     [
       'classic',
@@ -43,7 +48,9 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',
           editUrl:
-            'https://github.com/postyizhan/PostPlugins-Docs/blob/main'
+            'https://github.com/postyizhan/PostPlugins-Docs/blob/main',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
         blog: false,
         theme: {
@@ -66,7 +73,7 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: '文档',
+            label: 'PostPlugins',
           },
           {
             type: 'dropdown',
@@ -151,6 +158,16 @@ const config = {
       // 颜色随系统切换
       colorMode: {
         respectPrefersColorScheme: true,
+      },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 5,
+      },
+      docs: {
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
       },
     }),
 

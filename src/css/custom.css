@@ -17,11 +17,12 @@
   --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
   --ifm-heading-font-weight: 600;
   --ifm-navbar-shadow: none;
-  --ifm-navbar-height: 4rem;
+  --ifm-navbar-height: 3.75rem;
   --ifm-navbar-padding-vertical: 0.75rem;
   --ifm-navbar-padding-horizontal: 1.5rem;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-link-hover-decoration: none;
+  --doc-sidebar-width: 18rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -190,4 +191,189 @@ button, .button {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--ifm-color-emphasis-400);
+}
+
+/* 自定义头部 GitHub 图标 */
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+html[data-theme='dark'] .header-github-link:before {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+/* 资源页面在文档页面中的样式 - 仅基础容器样式 */
+.resource-page-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 确保资源页面侧边栏固定跟随 */
+[class*="resourcePageSidebar_"] {
+  position: sticky !important;
+  top: calc(var(--ifm-navbar-height) + 1rem) !important;
+  max-height: calc(100vh - var(--ifm-navbar-height) - 2rem) !important;
+  overflow-y: auto !important;
+  align-self: flex-start !important; 
+  z-index: 10 !important;
+}
+
+/* 使用普通类名确保侧边栏固定 */
+.resource-sidebar-sticky {
+  position: sticky !important;
+  top: calc(var(--ifm-navbar-height) + 1rem) !important;
+  max-height: calc(100vh - var(--ifm-navbar-height) - 2rem) !important;
+  overflow-y: auto !important;
+  align-self: flex-start !important;
+  display: block !important;
+}
+
+/* 修正Docusaurus的容器布局，确保sticky正常工作 */
+.resourceContent,
+[class*="resourceContent_"] {
+  display: flex !important;
+  align-items: flex-start !important;
+}
+
+/* 适配移动端样式 */
+@media (max-width: 996px) {
+  .resourcePageSidebar {
+    display: none;
+  }
+}
+
+/* 确保资源页面占据适当的宽度 - 这个选择器更安全，仅作用于特定类 */
+.resource-page-container .docusaurus-mt-lg {
+  max-width: 100%;
+}
+
+.navbar-dropdown-menu-item {
+  background-color: var(--ifm-color-primary-lightest);
+  border-radius: 0.375rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-separator {
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  margin: 0.5rem 0;
+}
+
+.dropdown-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 0.5rem;
+  padding: 0 0.75rem;
+}
+
+.quick-links-dropdown {
+  background-color: var(--ifm-background-surface-color);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  width: 16rem;
+}
+
+.quick-links-dropdown .dropdown-separator {
+  margin: 0.75rem 0;
+}
+
+.dropdown-backdrop {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme='dark'] .dropdown-backdrop {
+  background-color: rgba(15, 23, 42, 0.4);
+}
+
+/* 自定义背景渐变 */
+.hero-banner {
+  background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, var(--ifm-color-primary) 100%);
+  padding: 4rem 2rem;
+  text-align: center;
+  color: white;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+[data-theme='dark'] .hero-banner {
+  background: linear-gradient(135deg, var(--ifm-color-primary-darkest) 0%, var(--ifm-color-primary-dark) 100%);
+}
+
+/* 分页组件 */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background-color: var(--ifm-background-color);
+}
+
+.pagination-nav__link:hover {
+  background-color: var(--ifm-color-emphasis-400);
+}
+
+/* 暗色模式下的分页导航样式 */
+[data-theme='dark'] .pagination-nav__link {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background-color: var(--ifm-background-surface-color);
+}
+
+[data-theme='dark'] .pagination-nav__link:hover {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .pagination-nav__sublabel,
+[data-theme='dark'] .pagination-nav__label {
+  color: var(--ifm-color-primary-lighter);
+  font-weight: 500;
+}
+
+/* 强制性全局样式 - 确保粘性定位 */
+.resource-sidebar-sticky,
+[class*="resourcePageSidebar_"]:not([style*="position"]),
+aside[class*="resourcePageSidebar_"] {
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  top: calc(var(--ifm-navbar-height) + 1rem) !important;
+  align-self: flex-start !important;
+  height: auto !important;
+  max-height: calc(100vh - var(--ifm-navbar-height) - 2rem) !important;
+  overflow-y: auto !important;
+  transform: translateZ(0);
+  will-change: transform;
+  z-index: 10 !important;
+  
+  /* 隐藏滚动条但保持滚动功能 */
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+/* 为Webkit浏览器隐藏滚动条 */
+.resource-sidebar-sticky::-webkit-scrollbar,
+[class*="resourcePageSidebar_"]::-webkit-scrollbar,
+aside[class*="resourcePageSidebar_"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  background: transparent !important;
+}
+
+/* 强制内容区域正确布局 */
+[class*="resourceContent_"] {
+  display: flex !important;
+  align-items: flex-start !important;
+  position: relative !important;
 }

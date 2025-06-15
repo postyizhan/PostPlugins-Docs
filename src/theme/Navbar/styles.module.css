@@ -19,10 +19,10 @@
   height: 100%;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
   z-index: -1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 [data-theme='dark'] .navbarBackdrop {
@@ -33,7 +33,7 @@
 /* 滚动效果 */
 .scrolled .navbarBackdrop {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme='dark'] .scrolled .navbarBackdrop {
@@ -1579,16 +1579,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: rgba(var(--ifm-background-color-rgb), 0.3);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid var(--ifm-toc-border-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: -1;
 }
 
 [data-theme='dark'] .compactMenuBackdrop {
-  background-color: rgba(var(--ifm-background-color-rgb), 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -1632,7 +1633,7 @@
 .pluginListItem {
   display: flex;
   flex-direction: column;
-  background-color: #00000069;
+  background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--ifm-toc-border-color);
   border-radius: 8px;
   padding: 1rem;
@@ -1644,6 +1645,11 @@
   transform: translateY(-2px);
 }
 
+[data-theme='dark'] .pluginListItem {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
 [data-theme='dark'] .pluginListItem:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -1652,7 +1658,7 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: var(--ifm-font-color-base);
+  color: var(--ifm-heading-color);
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px dashed var(--ifm-toc-border-color);
@@ -1676,6 +1682,54 @@
   flex-shrink: 0;
 }
 
+[data-theme='dark'] .pluginListIcon {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.pluginListContent {
+  flex: 1;
+}
+
+.pluginListContent h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 0.25rem;
+  color: var(--ifm-heading-color);
+}
+
+.pluginListContent span {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.pluginDocLink {
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pluginDocLink:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+[data-theme='dark'] .pluginDocLink {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .pluginDocLink:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* 恢复被删除的其他样式 */
 .pluginDocs {
   display: flex;
   flex-wrap: wrap;
@@ -1752,11 +1806,13 @@
 }
 
 [data-theme='dark'] .resourceLink {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--ifm-color-emphasis-600);
 }
 
 [data-theme='dark'] .resourceLink:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--ifm-color-primary-lighter);
 }
 
 @media (max-width: 996px) {
@@ -1784,7 +1840,7 @@
 }
 
 [data-theme='dark'] .menuSearchBar {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .menuSearchBar svg {
@@ -1813,31 +1869,6 @@
   gap: 1.5rem;
 }
 
-.pluginListItem:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
-
-[data-theme='dark'] .pluginListItem:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.pluginListLink {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--ifm-font-color-base);
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px dashed var(--ifm-toc-border-color);
-}
-
-.pluginDocs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
 /* 查看全部插件按钮 */
 .viewAllPlugins {
   display: flex;
@@ -1853,7 +1884,7 @@
 }
 
 [data-theme='dark'] .viewAllPlugins {
-  background-color: rgba(var(--ifm-color-primary-rgb), 0.15);
+  background-color: rgba(0, 0, 0, 0.2);
   color: var(--ifm-color-primary-lighter);
 }
 
@@ -1864,7 +1895,8 @@
 }
 
 [data-theme='dark'] .viewAllPlugins:hover {
-  background-color: rgba(var(--ifm-color-primary-rgb), 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--ifm-color-primary-lightest);
 }
 
 /* 响应式调整 */
@@ -1872,65 +1904,6 @@
   .pluginGrid {
     grid-template-columns: 1fr;
   }
-  
-  .compactMenuColumns {
-    flex-direction: column;
-  }
-  
-  .compactMenuRight {
-    border-left: none;
-    padding-left: 0;
-    border-top: 1px solid var(--ifm-toc-border-color);
-    padding-top: 1.5rem;
-    margin-top: 1rem;
-  }
-}
-
-/* 恢复被删除的样式 */
-[data-theme='dark'] .pluginListIcon {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.pluginListContent {
-  display: flex;
-  flex-direction: column;
-}
-
-.pluginListContent h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.25rem;
-  color: var(--ifm-heading-color);
-}
-
-.pluginListContent span {
-  font-size: 0.8rem;
-  color: var(--ifm-color-emphasis-600);
-}
-
-.pluginDocLink {
-  font-size: 0.8rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  background-color: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-800);
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.pluginDocLink:hover {
-  background-color: var(--ifm-color-primary-lightest);
-  color: var(--ifm-color-primary-darkest);
-  text-decoration: none;
-}
-
-[data-theme='dark'] .pluginDocLink {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme='dark'] .pluginDocLink:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--ifm-color-primary-lighter);
 }
 
 /* 分页控制器 */
@@ -1967,12 +1940,12 @@
 }
 
 [data-theme='dark'] .paginationButton {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
   color: var(--ifm-color-emphasis-500);
 }
 
 [data-theme='dark'] .paginationButton:hover:not(:disabled) {
-  background-color: rgba(var(--ifm-color-primary-rgb), 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
   color: var(--ifm-color-primary-lighter);
 }
 

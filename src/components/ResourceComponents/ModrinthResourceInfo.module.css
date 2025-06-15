@@ -1,0 +1,183 @@
+.modrinthResource {
+  background-color: var(--ifm-card-background-color);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+.info h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.info p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--ifm-background-surface-color);
+  border-radius: 8px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: bold;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.value {
+  font-weight: 500;
+}
+
+.versions {
+  margin-bottom: 1.5rem;
+}
+
+.versions h4 {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.versionTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.versionTag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.versionList {
+  margin-bottom: 1.5rem;
+}
+
+.versionList h4 {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.versionList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.versionItem {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.versionItem:last-child {
+  border-bottom: none;
+}
+
+.versionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.versionName {
+  font-weight: 600;
+}
+
+.versionDate {
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.versionDescription {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.moreVersions {
+  text-align: center;
+  padding: 0.75rem;
+}
+
+.moreVersions a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.moreVersions a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.modrinthLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #1bd96a; /* Modrinth 绿色 */
+  color: #ffffff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.modrinthLink:hover {
+  background-color: #18c35f;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .icon {
+    margin-bottom: 1rem;
+    margin-right: 0;
+  }
+  
+  .stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+} 
