@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwiki_template=self.webpackChunkwiki_template||[]).push([[138],{4081:(e,t,a)=>{a.d(t,{CU:()=>l.a,Hg:()=>i,dz:()=>n,rG:()=>s});var k=a(689),l=a.n(k);const s=50,i=null,n=!1}}]);
