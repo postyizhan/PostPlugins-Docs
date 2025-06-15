@@ -26,6 +26,13 @@ const plugins = [
   }
 ];
 
+// 设置视口高度变量
+function setViewportHeight() {
+  // 获取视口高度并设置CSS变量
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
 // WebGL背景效果组件
 function BannerBackground() {
   const canvasRef = useRef(null);
@@ -342,7 +349,7 @@ function PluginCard({ plugin }) {
         {/* 这里为空，因为ModrinthFetcher会调用onDataLoaded回调 */}
       </ModrinthFetcher>
       
-      <div className={styles.pluginCardHeader}>
+              <div className={styles.pluginCardHeader}>
         {modrinthData?.icon_url ? (
           <img 
             src={modrinthData.icon_url} 
@@ -352,31 +359,31 @@ function PluginCard({ plugin }) {
         ) : (
           <div className={styles.pluginCardIconPlaceholder}>{plugin.title.charAt(0)}</div>
         )}
-        <div>
-          <h3 className={styles.pluginCardTitle}>{plugin.title}</h3>
+                <div>
+                  <h3 className={styles.pluginCardTitle}>{plugin.title}</h3>
           <span className={styles.pluginCardVersion}>
             {modrinthData?.versions && modrinthData.versions.length > 0 
               ? `v${modrinthData.versions[0].version_number}` 
               : 'v?.?.?'}
           </span>
-        </div>
-      </div>
-      
-      <p className={styles.pluginCardDescription}>
-        {plugin.description}
-      </p>
-      
-      <div className={styles.pluginCardFooter}>
-        <div className={styles.pluginCardTags}>
-          {plugin.tags.map((tag, tagIdx) => (
-            <span key={tagIdx} className={styles.pluginCardTag}>{tag}</span>
-          ))}
-        </div>
-        <Link className={styles.pluginCardButton} to={plugin.link}>
-          查看文档
-        </Link>
-      </div>
-    </div>
+                </div>
+              </div>
+              
+              <p className={styles.pluginCardDescription}>
+                {plugin.description}
+              </p>
+              
+              <div className={styles.pluginCardFooter}>
+                <div className={styles.pluginCardTags}>
+                  {plugin.tags.map((tag, tagIdx) => (
+                    <span key={tagIdx} className={styles.pluginCardTag}>{tag}</span>
+                  ))}
+                </div>
+                <Link className={styles.pluginCardButton} to={plugin.link}>
+                  查看文档
+                </Link>
+              </div>
+            </div>
   );
 }
 
@@ -471,6 +478,22 @@ function SupportSection() {
 }
 
 export default function Home() {
+  // 设置视口高度
+  useEffect(() => {
+    // 初始设置
+    setViewportHeight();
+    
+    // 监听窗口大小变化
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+    
+    // 清理函数
+    return () => {
+      window.removeEventListener('resize', setViewportHeight);
+      window.removeEventListener('orientationchange', setViewportHeight);
+    };
+  }, []);
+
   return (
     <Layout title="主页" description="Post系列插件 - 为您的Minecraft服务器提供实用功能增强">
       <main className={styles.main}>

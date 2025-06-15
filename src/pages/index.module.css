@@ -594,8 +594,8 @@
 /* 响应式设计 */
 @media (max-width: 996px) {
   .banner {
-    height: auto;
-    min-height: calc(90vh - var(--ifm-navbar-height));
+    height: calc(100vh - var(--ifm-navbar-height));
+    min-height: calc(100vh - var(--ifm-navbar-height));
   }
   
   .bannerTitle {
@@ -621,9 +621,10 @@
 
 @media (max-width: 768px) {
   .banner {
-    height: auto;
-    min-height: calc(80vh - var(--ifm-navbar-height));
-    padding: 3rem 0;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100 - var(--ifm-navbar-height));
+    min-height: calc(var(--vh, 1vh) * 100 - var(--ifm-navbar-height));
+    padding: 2rem 0;
   }
 
   .bannerContent {

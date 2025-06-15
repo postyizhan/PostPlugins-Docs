@@ -227,6 +227,90 @@
   justify-content: flex-end;
 }
 
+/* 自定义移动侧边栏按钮 */
+.mobileSidebarButton {
+  display: none;
+  padding: 0;
+  margin-right: 0.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--ifm-navbar-link-color);
+  position: relative;
+  width: 28px;
+  height: 28px;
+}
+
+.mobileSidebarButton::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background-color: var(--ifm-color-emphasis-200);
+  border-radius: 50%;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: -1;
+}
+
+.mobileSidebarButton:hover::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.mobileSidebarButton svg {
+  transition: transform 0.2s ease;
+}
+
+.mobileSidebarButton:active svg {
+  transform: scale(0.9);
+}
+
+@media (max-width: 996px) {
+  .mobileSidebarButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* 移动端侧边栏切换 */
+.mobileSidebarToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 8px;
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+[data-theme='dark'] .mobileSidebarToggle {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.15);
+}
+
+.mobileSidebarToggle:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] .mobileSidebarToggle:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.25);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* 语言切换 */
 .localeDropdown {
   position: relative;
@@ -345,6 +429,7 @@
 .searchWrapper {
   margin: 0 0.5rem;
   position: relative;
+  display: flex;
 }
 
 /* 自定义搜索框样式 */
@@ -361,14 +446,14 @@
 }
 
 .customSearchInput {
-  width: 220px;
-  height: 40px;
-  padding: 0 16px 0 40px;
-  border-radius: 20px;
+  width: 200px;
+  height: 36px;
+  padding: 0 16px 0 36px;
+  border-radius: 18px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.9);
   color: var(--ifm-font-color-base);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(8px);
@@ -376,10 +461,10 @@
 }
 
 .customSearchInput:focus {
-  width: 280px;
+  width: 260px;
   outline: none;
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 0 3px rgba(var(--ifm-color-primary-rgb), 0.25);
 }
 
 .customSearchInput::placeholder {
@@ -389,7 +474,7 @@
 
 .customSearchIcon {
   position: absolute;
-  left: 12px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--ifm-color-emphasis-600);
@@ -409,7 +494,7 @@
 [data-theme='dark'] .customSearchInput:focus {
   background-color: rgba(30, 41, 59, 0.9);
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--ifm-color-primary-rgb), 0.3);
 }
 
 [data-theme='dark'] .customSearchInput::placeholder {
@@ -421,31 +506,9 @@
 }
 
 /* 响应式样式 */
-@media (max-width: 768px) {
-  .navbarContainer {
-    padding: 0 1rem;
-  }
-
-  .navbarTitle {
-    font-size: 1.1rem;
-  }
-  
+@media (max-width: 996px) {
   .searchWrapper {
-    margin-left: auto;
-  }
-  
-  .customSearchInput {
-    width: 140px;
-    height: 2.2rem;
-    font-size: 0.85rem;
-  }
-  
-  .customSearchInput:focus {
-    width: 180px;
-  }
-  
-  .githubLink {
-    display: none;
+    display: none; /* 在移动端隐藏PC搜索框 */
   }
 }
 
@@ -587,10 +650,10 @@
 .mobileMenu {
   display: none;
   position: fixed;
-  top: 4.5rem;
+  top: var(--ifm-navbar-height);
   left: 0;
   width: 100%;
-  height: calc(100vh - 4.5rem);
+  height: calc(100vh - var(--ifm-navbar-height));
   transform: translateX(100%);
   opacity: 0;
   visibility: hidden;
@@ -604,14 +667,16 @@
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.8);
   z-index: -1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 [data-theme='dark'] .mobileMenuBackdrop {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mobileMenuOpen {
@@ -628,6 +693,13 @@
   overflow-y: auto;
   max-width: 400px;
   margin: 0 auto;
+  /* 隐藏滚动条但保持可滚动功能 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.mobileMenuItems::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* 移动端菜单项 */
@@ -637,7 +709,10 @@
   padding: 0.8rem 1rem;
   margin: 0.5rem 0;
   border-radius: 8px;
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   color: var(--ifm-color-emphasis-900);
   font-weight: 500;
   text-decoration: none;
@@ -646,54 +721,22 @@
 
 [data-theme='dark'] .mobileMenuItem {
   background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.9);
 }
 
 .mobileMenuItem:hover {
-  background-color: var(--ifm-color-emphasis-200);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
   color: var(--ifm-color-primary);
   text-decoration: none;
 }
 
 [data-theme='dark'] .mobileMenuItem:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
   color: var(--ifm-color-primary-lighter);
 }
 
-.mobileMenuItemActive {
-  color: var(--ifm-color-primary);
-  font-weight: 600;
-}
-
-.mobileMenuItemContent {
-  flex: 1;
-}
-
-.mobileMenuItemHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-}
-
-.mobileMenuItemHeader h4 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0;
-  color: var(--ifm-heading-color);
-}
-
-.mobileMenuItemContent p {
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--ifm-color-emphasis-700);
-  margin: 0;
-}
-
-.mobileSubmenu {
-  margin-bottom: 0.5rem;
-}
-
+/* 菜单标题 */
 .mobileMenuHeader {
   display: flex;
   align-items: center;
@@ -701,8 +744,10 @@
   padding: 0.8rem 1rem;
   margin: 0.5rem 0;
   border-radius: 8px;
-  background-color: var(--ifm-color-emphasis-100);
-  border: 1px solid var(--ifm-toc-border-color);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 600;
@@ -710,70 +755,28 @@
 
 [data-theme='dark'] .mobileMenuHeader {
   background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .mobileMenuHeader:hover {
-  background-color: var(--ifm-color-emphasis-200);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
 }
 
 [data-theme='dark'] .mobileMenuHeader:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
 }
 
-.mobileMenuArrow {
-  transition: transform 0.2s ease;
-}
-
-.mobileMenuArrow.dropdownArrowOpen {
-  transform: rotate(180deg);
-}
-
-/* 移动菜单中的子菜单项 */
-.mobileSubmenuItems {
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  animation: submenuFadeIn 0.2s ease;
-}
-
-@keyframes submenuFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 移动端菜单分隔线 */
-.mobileMenuDivider {
-  height: 1px;
-  background-color: var(--ifm-toc-border-color);
-  margin: 1rem 0;
-}
-
-/* 移动端菜单区块 */
-.mobileMenuSection {
-  margin-bottom: 1rem;
-}
-
-.mobileMenuSectionTitle {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  color: var(--ifm-color-emphasis-700);
-  font-weight: 500;
-}
-
+/* 主题切换按钮 */
 .mobileThemeToggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 1rem;
-  background-color: var(--ifm-color-emphasis-100);
-  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   color: var(--ifm-navbar-link-color);
   font-weight: 500;
@@ -781,48 +784,80 @@
   transition: all 0.2s;
 }
 
-.mobileThemeToggle:hover {
-  background-color: var(--ifm-color-emphasis-200);
+[data-theme='dark'] .mobileThemeToggle {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
+.mobileThemeToggle:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+}
+
+[data-theme='dark'] .mobileThemeToggle:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+}
+
+/* GitHub链接 */
 .mobileGithubLink {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
   color: var(--ifm-navbar-link-color);
   font-weight: 500;
   text-decoration: none;
-  border-radius: 8px;
   transition: all 0.2s;
 }
 
+[data-theme='dark'] .mobileGithubLink {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
 .mobileGithubLink:hover {
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
   color: var(--ifm-color-primary);
   text-decoration: none;
 }
 
-.mobileLocale {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+[data-theme='dark'] .mobileGithubLink:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+  color: var(--ifm-color-primary-lighter);
 }
 
+/* 语言选择按钮 */
 .mobileLocaleItem {
   padding: 0.75rem 1rem;
   color: var(--ifm-navbar-link-color);
   font-weight: 500;
   text-decoration: none;
   border-radius: 8px;
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
 }
 
+[data-theme='dark'] .mobileLocaleItem {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
 .mobileLocaleItem:hover {
-  background-color: var(--ifm-color-emphasis-200);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
   color: var(--ifm-color-primary);
   text-decoration: none;
+}
+
+[data-theme='dark'] .mobileLocaleItem:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+  color: var(--ifm-color-primary-lighter);
 }
 
 /* 动画 */
@@ -854,9 +889,14 @@
   .mobileMenu {
     display: block;
   }
-  
+
   .localeDropdown {
     display: none;
+  }
+  
+  /* 在移动端显示侧边栏切换按钮 */
+  .mobileSidebarButton {
+    display: flex;
   }
 
   .megaDropdownMenu {
@@ -1023,322 +1063,6 @@
 .megaDropdownCardHeader h4 {
   font-size: 1rem;
   font-weight: 600;
-  margin: 0;
-  color: var(--ifm-heading-color);
-}
-
-.megaDropdownCard:hover .megaDropdownCardHeader h4 {
-  color: var(--ifm-color-primary);
-}
-
-.megaDropdownCardVersion {
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  background-color: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-800);
-}
-
-.megaDropdownCardContent p {
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--ifm-color-emphasis-700);
-  margin-bottom: 0.5rem;
-  margin-top: 0;
-}
-
-.megaDropdownCardTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.megaDropdownCardTag {
-  font-size: 0.7rem;
-  padding: 0.05rem 0.4rem;
-  border-radius: 3px;
-  background-color: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-800);
-}
-
-.megaDropdownFooter {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ifm-toc-border-color);
-}
-
-.megaDropdownFooterLink {
-  display: flex;
-  align-items: center;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  color: var(--ifm-color-primary);
-  transition: all 0.2s ease;
-}
-
-.megaDropdownFooterLink span {
-  margin-right: 0.5rem;
-}
-
-.megaDropdownFooterLink:hover {
-  background-color: var(--ifm-color-primary);
-  color: white;
-  text-decoration: none;
-}
-
-@keyframes megaMenuFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* 移动端子菜单项 */
-.mobileSimpleItem {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  border-radius: 8px;
-  background-color: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-900);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-[data-theme='dark'] .mobileSimpleItem {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.mobileSimpleItem:hover {
-  background-color: var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-primary);
-  text-decoration: none;
-}
-
-[data-theme='dark'] .mobileSimpleItem:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--ifm-color-primary-lighter);
-}
-
-/* 全宽通铺下拉菜单 */
-.fullWidthMegaMenu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100vw;
-  z-index: 1000;
-  animation: fadeInDown 0.3s ease-out forwards;
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fullWidthBackdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background-color: rgba(255, 255, 255, 0.85);
-  z-index: -1;
-}
-
-[data-theme='dark'] .fullWidthBackdrop {
-  background-color: rgba(15, 23, 42, 0.8);
-}
-
-.fullWidthContainer {
-  display: flex;
-  flex-direction: column;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  position: relative;
-}
-
-.fullWidthHeader {
-  margin-bottom: 2rem;
-  text-align: center;
-  position: relative;
-}
-
-.fullWidthTitle {
-  position: relative;
-  display: inline-block;
-}
-
-.fullWidthTitle::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--ifm-color-primary-light), var(--ifm-color-primary));
-  border-radius: 4px;
-}
-
-.fullWidthTitle h3 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(to right, var(--ifm-color-primary), var(--ifm-color-primary-dark));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
-}
-
-[data-theme='dark'] .fullWidthTitle h3 {
-  background: linear-gradient(to right, var(--ifm-color-primary-light), var(--ifm-color-primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.fullWidthTitle p {
-  font-size: 1rem;
-  color: var(--ifm-color-emphasis-700);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.fullWidthContent {
-  display: flex;
-  gap: 2.5rem;
-}
-
-/* 插件展示区域 */
-.pluginShowcase {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  flex: 1;
-}
-
-.pluginCard {
-  width: calc(50% - 0.75rem);
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-  overflow: hidden;
-}
-
-.pluginCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: var(--card-accent-color, var(--ifm-color-primary));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.pluginCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  border-color: var(--card-accent-color, var(--ifm-color-primary-light));
-  text-decoration: none;
-}
-
-.pluginCard:hover::before {
-  transform: scaleX(1);
-}
-
-[data-theme='dark'] .pluginCard {
-  background-color: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.pluginCardIconWrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.25rem;
-}
-
-.pluginCardIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--card-accent-color, var(--ifm-color-primary-lightest)), rgba(255, 255, 255, 0.8));
-  color: var(--card-accent-color, var(--ifm-color-primary));
-  margin-right: 1rem;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.pluginCardIcon::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 60%);
-}
-
-[data-theme='dark'] .pluginCardIcon {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-  color: var(--card-accent-color, var(--ifm-color-primary-light));
-}
-
-.pluginCard:hover .pluginCardIcon {
-  transform: scale(1.05) rotate(-5deg);
-}
-
-.pluginCardContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.pluginCardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.pluginCardHeader h4 {
-  font-size: 1.25rem;
-  font-weight: 700;
   margin: 0;
   color: var(--ifm-heading-color);
 }
@@ -1603,7 +1327,7 @@
   height: 100%;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: -1;
@@ -1649,8 +1373,8 @@
 }
 
 .pluginList {
-  display: none;
-}
+    display: none;
+  }
 
 .pluginListItem {
   display: flex;
@@ -1998,34 +1722,37 @@
   margin: 0;
 }
 
+/* 移动端子菜单项 */
 .mobileSimpleItem {
   display: flex;
   align-items: center;
   padding: 1rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
   border-radius: 8px;
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   color: var(--ifm-color-emphasis-900);
   text-decoration: none;
   transition: all 0.2s ease;
-  position: relative;
-  z-index: 2;
   cursor: pointer;
-}
-
-.mobileSimpleItem:hover {
-  background-color: var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-primary);
-  text-decoration: none;
 }
 
 [data-theme='dark'] .mobileSimpleItem {
   background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.9);
 }
 
+.mobileSimpleItem:hover {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
 [data-theme='dark'] .mobileSimpleItem:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1);
   color: var(--ifm-color-primary-lighter);
 }
 
@@ -2124,4 +1851,140 @@
 
 [data-theme='dark'] .mobileMenuSection .customSearchIcon {
   color: rgba(255, 255, 255, 0.8);
+}
+
+.mobileMenuItemActive {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.mobileMenuItemContent {
+  flex: 1;
+}
+
+.mobileMenuItemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.mobileMenuItemHeader h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ifm-heading-color);
+}
+
+.mobileMenuItemContent p {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+}
+
+.mobileSubmenu {
+  margin-bottom: 0.5rem;
+}
+
+.mobileMenuArrow {
+  transition: transform 0.2s ease;
+}
+
+.mobileMenuArrow.dropdownArrowOpen {
+  transform: rotate(180deg);
+}
+
+/* 移动菜单中的子菜单项 */
+.mobileSubmenuItems {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  animation: submenuFadeIn 0.2s ease;
+}
+
+@keyframes submenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 移动端菜单分隔线 */
+.mobileMenuDivider {
+  height: 1px;
+  background-color: var(--ifm-toc-border-color);
+  margin: 1rem 0;
+}
+
+/* 移动端菜单区块 */
+.mobileMenuSection {
+  margin-bottom: 1rem;
+}
+
+.mobileMenuSectionTitle {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  font-weight: 500;
+}
+
+.mobileLocale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 自定义移动侧边栏按钮 */
+.mobileSidebarButton {
+  display: none;
+  padding: 0;
+  margin-right: 0.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--ifm-navbar-link-color);
+  position: relative;
+  width: 28px;
+  height: 28px;
+}
+
+.mobileSidebarButton::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background-color: var(--ifm-color-emphasis-200);
+  border-radius: 50%;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: -1;
+}
+
+.mobileSidebarButton:hover::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.mobileSidebarButton svg {
+  transition: transform 0.2s ease;
+}
+
+.mobileSidebarButton:active svg {
+  transform: scale(0.9);
+}
+
+@media (max-width: 996px) {
+  .mobileSidebarButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 } 

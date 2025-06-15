@@ -659,6 +659,7 @@
 /* 下拉菜单容器 */
 .dropdownContainer {
   position: relative;
+  z-index: 10; /* 增加z-index值 */
 }
 
 /* 下拉菜单 */
@@ -671,7 +672,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  z-index: 100;
+  z-index: 1000; /* 增加z-index值，确保在最上层 */
   animation: fadeIn 0.2s ease;
 }
 

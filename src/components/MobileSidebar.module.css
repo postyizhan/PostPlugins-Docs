@@ -1,0 +1,240 @@
+/* 移动侧边栏容器 */
+.mobileSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1500;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobileSidebarOpen {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 侧边栏背景遮罩 */
+.mobileSidebarBackdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: -1;
+}
+
+/* 侧边栏主容器 */
+.mobileSidebarContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100%;
+  background-color: var(--ifm-background-surface-color);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-10px);
+  opacity: 0;
+  animation: sidebarSlideIn 0.25s ease forwards;
+}
+
+@keyframes sidebarSlideIn {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 隐藏侧边栏滚动条 */
+.mobileSidebarContainer::-webkit-scrollbar {
+  display: none;
+}
+.mobileSidebarContainer {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 侧边栏头部 */
+.mobileSidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+.mobileSidebarTitle {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.mobileSidebarCloseButton {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--ifm-color-emphasis-500);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.mobileSidebarCloseButton:hover {
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* 侧边栏内容 */
+.mobileSidebarContent {
+  flex: 1;
+  padding: 0.5rem 0;
+}
+
+.mobileSidebarEmpty {
+  padding: 1rem;
+  text-align: center;
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+}
+
+.mobileSidebarItem {
+  margin-bottom: 0;
+  animation: itemFadeIn 0.4s ease forwards;
+  opacity: 0;
+}
+
+.mobileSidebarItem:nth-child(1) { animation-delay: 0.05s; }
+.mobileSidebarItem:nth-child(2) { animation-delay: 0.1s; }
+.mobileSidebarItem:nth-child(3) { animation-delay: 0.15s; }
+.mobileSidebarItem:nth-child(4) { animation-delay: 0.2s; }
+.mobileSidebarItem:nth-child(5) { animation-delay: 0.25s; }
+.mobileSidebarItem:nth-child(6) { animation-delay: 0.3s; }
+.mobileSidebarItem:nth-child(7) { animation-delay: 0.35s; }
+.mobileSidebarItem:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes itemFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 侧边栏分类样式 */
+.mobileSidebarCategory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ifm-menu-color);
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+  font-size: 0.85rem;
+}
+
+.mobileSidebarCategoryActive {
+  color: var(--ifm-menu-color-active);
+  background-color: var(--ifm-menu-color-background-active);
+  border-left-color: var(--ifm-menu-color-active);
+}
+
+.mobileSidebarCategory:hover {
+  background-color: var(--ifm-menu-color-background-hover);
+}
+
+.mobileSidebarCategoryIcon {
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.mobileSidebarCategoryIconRotated {
+  transform: rotate(180deg);
+}
+
+/* 侧边栏子项容器 */
+.mobileSidebarSubItems {
+  padding-left: 0.75rem;
+  font-size: 0.8rem;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.mobileSidebarSubItems > * {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition-delay: 0.1s;
+}
+
+/* 使用类名控制展开状态，而不是:has选择器 */
+.mobileSidebarSubItemsExpanded {
+  max-height: 500px;
+}
+
+.mobileSidebarSubItemsExpanded > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 侧边栏链接样式 */
+.mobileSidebarLink {
+  display: block;
+  padding: 0.35rem 0.75rem;
+  color: var(--ifm-menu-color);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+  font-size: 0.8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobileSidebarLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.75rem;
+  right: 100%;
+  height: 1px;
+  background-color: var(--ifm-menu-color-active);
+  transition: right 0.2s ease;
+}
+
+.mobileSidebarLink:hover {
+  background-color: var(--ifm-menu-color-background-hover);
+  color: var(--ifm-menu-color-hover);
+  text-decoration: none;
+}
+
+.mobileSidebarLink:hover::after {
+  right: 0.75rem;
+}
+
+.mobileSidebarLinkActive {
+  background-color: var(--ifm-menu-color-background-active);
+  color: var(--ifm-menu-color-active);
+  border-left-color: var(--ifm-menu-color-active);
+}
+
+/* 移动端适配 */
+@media screen and (min-width: 997px) {
+  .mobileSidebar {
+    display: none;
+  }
+} 
