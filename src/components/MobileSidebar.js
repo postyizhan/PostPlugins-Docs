@@ -162,31 +162,35 @@ function MobileSidebar({ isOpen, onClose }) {
     if (item.type === 'category') {
       const isExpanded = expandedCategories[item.label] || false;
       return (
-        <div key={item.label} className={styles.mobileSidebarItem}>
-          <div 
+        <>
+          <div
             className={`${styles.mobileSidebarCategory} ${
-              item.items?.some(subItem => isActive(getDocLink(subItem.id || subItem))) 
-                ? styles.mobileSidebarCategoryActive 
+              item.items?.some(subItem => isActive(getDocLink(subItem.id || subItem)))
+                ? styles.mobileSidebarCategoryActive
                 : ''
             }`}
             onClick={() => toggleCategory(item.label)}
           >
             <span>{item.label}</span>
-            <svg 
-              className={`${styles.mobileSidebarCategoryIcon} ${isExpanded ? styles.mobileSidebarCategoryIconRotated : ''}`} 
-              width="14" 
-              height="14" 
-              viewBox="0 0 16 16" 
-              fill="none" 
+            <svg
+              className={`${styles.mobileSidebarCategoryIcon} ${isExpanded ? styles.mobileSidebarCategoryIconRotated : ''}`}
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <div className={`${styles.mobileSidebarSubItems} ${isExpanded ? styles.mobileSidebarSubItemsExpanded : ''}`}>
-            {item.items?.map(subItem => renderSidebarItem(subItem))}
+            {item.items?.map((subItem, subIndex) => (
+              <div key={subIndex}>
+                {renderSidebarItem(subItem)}
+              </div>
+            ))}
           </div>
-        </div>
+        </>
       );
     }
     
@@ -228,7 +232,11 @@ function MobileSidebar({ isOpen, onClose }) {
         </div>
         <div className={styles.mobileSidebarContent}>
           {mainSidebar && mainSidebar.length > 0 ? (
-            mainSidebar.map(item => renderSidebarItem(item))
+            mainSidebar.map((item, index) => (
+              <div key={index} className={styles.mobileSidebarItem}>
+                {renderSidebarItem(item)}
+              </div>
+            ))
           ) : (
             <div className={styles.mobileSidebarEmpty}>
               <p>暂无导航内容</p>
