@@ -76,6 +76,24 @@ const config = {
             label: 'PostPlugins',
           },
           {
+            type: 'doc',
+            docId: 'PostSpawner/intro',
+            position: 'left',
+            label: 'PostSpawner',
+          },
+          {
+            type: 'doc',
+            docId: 'PostDrop/intro',
+            position: 'left',
+            label: 'PostDrop',
+          },
+          {
+            type: 'doc',
+            docId: 'PostWarps/intro',
+            position: 'left',
+            label: 'PostWarps',
+          },
+          {
             type: 'dropdown',
             label: '插件',
             position: 'left',
@@ -87,6 +105,10 @@ const config = {
               {
                 label: 'PostDrop',
                 to: '/PostDrop/intro',
+              },
+              {
+                label: 'PostWarps',
+                to: '/PostWarps/intro',
               },
             ],
           },
@@ -125,6 +147,10 @@ const config = {
               {
                 label: 'PostDrop',
                 to: '/PostDrop/intro',
+              },
+              {
+                label: 'PostWarps',
+                to: '/PostWarps/intro',
               },
             ],
           },

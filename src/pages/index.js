@@ -23,6 +23,13 @@ const plugins = [
     description: '实用的物品丢弃保护插件，防止其他玩家拾取您丢弃的物品，支持物品高亮、可见性控制等功能。',
     link: '/PostDrop/intro',
     tags: ['物品', '保护', '高亮'],
+  },
+  {
+    title: 'PostWarps',
+    projectId: 'PostWarps', // Modrinth项目ID
+    description: '功能强大的地标传送插件，支持创建公开和私有地标，提供完整的传送解决方案，让玩家轻松管理传送点。',
+    link: '/PostWarps/intro',
+    tags: ['传送', '地标', '管理'],
   }
 ];
 

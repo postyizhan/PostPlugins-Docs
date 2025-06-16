@@ -22,6 +22,13 @@ const sidebars = {
         'PostDrop/PlaceholderAPI',
       ],
     },
+    {
+      type: 'category',
+      label: 'PostWarps',
+      items: [
+        'PostWarps/intro',
+      ],
+    },
   ],
 };
 

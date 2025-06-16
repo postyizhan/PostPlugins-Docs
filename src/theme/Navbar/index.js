@@ -64,6 +64,25 @@ function CustomNavbar() {
         { label: '权限设置', to: '/PostDrop/permission' },
         { label: 'PlaceholderAPI', to: '/PostDrop/PlaceholderAPI' },
       ]
+    },
+    {
+      id: 'PostWarps',
+      name: 'PostWarps',
+      description: '地标传送插件',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 22v-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 17L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 12L2 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 17l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 12l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      to: '/PostWarps/intro',
+      docs: [
+        { label: '基础介绍', to: '/PostWarps/intro' },
+      ]
     }
   ];
   
@@ -180,7 +199,7 @@ function CustomNavbar() {
             </svg>
           ),
         },
-        { 
+        {
           label: 'PostDrop',
           description: '物品丢弃保护插件',
           to: '/PostDrop/intro',
@@ -188,6 +207,21 @@ function CustomNavbar() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 7L12 3L4 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M20 12L12 16L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          ),
+        },
+        {
+          label: 'PostWarps',
+          description: '地标传送插件',
+          to: '/PostWarps/intro',
+          icon: (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 22v-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 17L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 12L2 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 17l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 12l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           ),
         },
@@ -598,7 +632,7 @@ function CustomNavbar() {
               <Link
                 to="/PostDrop/intro"
                 className={styles.mobileSimpleItem}
-                
+
                 onClick={() => setIsMenuOpen(false)}
               >
                 <div className={styles.mobileSimpleIcon}>
@@ -610,6 +644,28 @@ function CustomNavbar() {
                 <div className={styles.mobileSimpleContent}>
                   <h4>PostDrop</h4>
                   <p>物品丢弃保护插件</p>
+                </div>
+              </Link>
+
+              {/* PostWarps */}
+              <Link
+                to="/PostWarps/intro"
+                className={styles.mobileSimpleItem}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className={styles.mobileSimpleIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 22v-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 17L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 12L2 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 17l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 12l10-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div className={styles.mobileSimpleContent}>
+                  <h4>PostWarps</h4>
+                  <p>地标传送插件</p>
                 </div>
               </Link>
             </div>
