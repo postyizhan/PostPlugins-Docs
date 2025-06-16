@@ -112,16 +112,16 @@
 
 .mobileSidebarItem {
   margin-bottom: 0;
-  animation: itemFadeIn 0.4s ease forwards;
+  animation: itemFadeIn 0.3s ease forwards;
   opacity: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity, transform;
 }
 
 .mobileSidebarItem:nth-child(1) { animation-delay: 0.05s; }
 .mobileSidebarItem:nth-child(2) { animation-delay: 0.1s; }
 .mobileSidebarItem:nth-child(3) { animation-delay: 0.15s; }
 .mobileSidebarItem:nth-child(4) { animation-delay: 0.2s; }
-.mobileSidebarItem:nth-child(5) { animation-delay: 0.25s; }
-.mobileSidebarItem:nth-child(6) { animation-delay: 0.3s; }
 .mobileSidebarItem:nth-child(7) { animation-delay: 0.35s; }
 .mobileSidebarItem:nth-child(8) { animation-delay: 0.4s; }
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import { useColorMode } from '@docusaurus/theme-common';
 import ModrinthFetcher from '../components/ResourceComponents/ModrinthFetcher';
+import PerformanceMonitor, { PerformanceUtils } from '../components/PerformanceMonitor';
 
 import styles from './index.module.css';
 
@@ -38,24 +38,49 @@ function BannerBackground() {
   const canvasRef = useRef(null);
   const { colorMode } = useColorMode();
   const isDarkTheme = colorMode === 'dark';
+  const animationRef = useRef(null);
+  const fpsRef = useRef({ lastTime: 0, frameCount: 0, fps: 60 });
+  const performanceRef = useRef({ isLowEnd: false, targetFPS: 60 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const gl = canvas.getContext('webgl');
-    
+
     if (!gl) {
       console.error('WebGL not supported');
       return;
     }
-    
-    // 设置画布尺寸
-    const setCanvasSize = () => {
-      const { width, height } = canvas.getBoundingClientRect();
-      canvas.width = width * window.devicePixelRatio;
-      canvas.height = height * window.devicePixelRatio;
-      gl.viewport(0, 0, canvas.width, canvas.height);
+
+    const detectPerformance = () => {
+      const renderer = gl.getParameter(gl.RENDERER);
+      const vendor = gl.getParameter(gl.VENDOR);
+
+      const isLowEnd = /Mali|Adreno [1-4]|PowerVR|Intel/.test(renderer) ||
+                       window.devicePixelRatio > 2 ||
+                       window.innerWidth < 768;
+
+      performanceRef.current = {
+        isLowEnd,
+        targetFPS: isLowEnd ? 30 : 60,
+        quality: isLowEnd ? 0.5 : 1.0
+      };
     };
-    
+
+    detectPerformance();
+
+    // 防抖的画布尺寸设置
+    let resizeTimeout;
+    const setCanvasSize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const { width, height } = canvas.getBoundingClientRect();
+        const pixelRatio = Math.min(window.devicePixelRatio, performanceRef.current.isLowEnd ? 1.5 : 2);
+        canvas.width = width * pixelRatio;
+        canvas.height = height * pixelRatio;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }, 100);
+    };
+
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
     
@@ -76,119 +101,81 @@ function BannerBackground() {
       uniform float u_time;
       uniform vec2 u_resolution;
       uniform bool u_isDark;
-      
-      // 简单的柏林噪声实现
-      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-      vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-      vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-      
-      float snoise(vec2 v) {
-        const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                 -0.577350269189626, 0.024390243902439);
-        vec2 i  = floor(v + dot(v, C.yy));
-        vec2 x0 = v -   i + dot(i, C.xx);
-        vec2 i1;
-        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-        vec4 x12 = x0.xyxy + C.xxzz;
-        x12.xy -= i1;
-        i = mod289(i);
-        vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
-        + i.x + vec3(0.0, i1.x, 1.0));
-        vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
-        m = m*m;
-        m = m*m;
-        vec3 x = 2.0 * fract(p * C.www) - 1.0;
-        vec3 h = abs(x) - 0.5;
-        vec3 ox = floor(x + 0.5);
-        vec3 a0 = x - ox;
-        m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
-        vec3 g;
-        g.x  = a0.x  * x0.x  + h.x  * x0.y;
-        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-        return 130.0 * dot(m, g);
+      uniform float u_quality;
+
+      // 噪声函数
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
       }
 
-      // 波浪函数
-      float wave(vec2 position, float time, float speed, float frequency, float amplitude) {
-        return sin(dot(position, vec2(0.0, frequency)) + time * speed) * amplitude;
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+
+        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      }
+
+      float wave(vec2 position, float time, float speed, float frequency) {
+        return sin(position.y * frequency + time * speed) * 0.5 + 0.5;
       }
       
       void main() {
         vec2 st = v_texCoord;
         st.x *= u_resolution.x / u_resolution.y;
+
+        float time = u_time * 0.15;
+
+        // 波浪效果 - 根据质量调整
+        float wave1 = wave(st, time, 0.4, 8.0);
+        float wave2 = u_quality > 0.7 ? wave(st, time, 0.2, 12.0) : wave1 * 0.5;
+
+        // 简化的噪声计算
+        vec2 noiseUV = st + vec2(wave1 * 0.1, wave2 * 0.1);
+        float noise1 = noise(noiseUV * 3.0 + time * 0.1);
+        float noise2 = u_quality > 0.7 ? noise(noiseUV * 2.0 - time * 0.08) : noise1 * 0.8;
+
+        // 简化的噪声混合
+        float finalNoise = mix(noise1, noise2, 0.6);
         
-        // 动态渐变
-        float time = u_time * 0.2;
-        
-        // 创建多层波浪效果
-        float wave1 = wave(st, time, 0.5, 10.0, 0.03);
-        float wave2 = wave(st, time, 0.3, 15.0, 0.02);
-        float wave3 = wave(st, time * 0.8, 0.7, 5.0, 0.01);
-        
-        // 合并波浪
-        float combinedWaves = wave1 + wave2 + wave3;
-        
-        // 使用波浪扭曲坐标
-        vec2 distortedUV = st + vec2(combinedWaves * 0.2, combinedWaves * 0.3);
-        
-        // 生成多层噪声
-        float noise1 = snoise(distortedUV * 2.0 + time * 0.2) * 0.5 + 0.5;
-        float noise2 = snoise(distortedUV * 3.0 - time * 0.15) * 0.5 + 0.5;
-        float noise3 = snoise(distortedUV * 1.0 + time * 0.1) * 0.5 + 0.5;
-        
-        // 混合噪声
-        float finalNoise = noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2;
-        
-        // 为亮色和暗色主题设置不同的颜色
+        // 优化的颜色计算
         vec3 color;
         if(u_isDark) {
-          // 暗色主题 - 深蓝色到紫色渐变
-          vec3 color1 = vec3(0.05, 0.1, 0.2);  // 深蓝色
-          vec3 color2 = vec3(0.15, 0.05, 0.3); // 深紫色
-          vec3 color3 = vec3(0.05, 0.15, 0.25); // 深青色
-          
-          // 使用波浪效果来混合颜色
-          float waveBlend = (sin(time * 0.2) * 0.5 + 0.5) * 0.3;
-          color = mix(mix(color1, color2, noise1 + waveBlend), color3, noise2);
-          
-          // 添加一些亮点
-          float highlight = pow(noise3, 5.0) * 0.8;
-          color += vec3(0.3, 0.4, 0.9) * highlight;
-          
-          // 添加波浪光效
-          float waveHighlight = smoothstep(0.3, 0.7, sin(st.y * 20.0 + time * 2.0) * 0.5 + 0.5);
-          color += vec3(0.1, 0.2, 0.5) * waveHighlight * 0.1;
+          // 暗色主题 - 简化的渐变
+          vec3 color1 = vec3(0.05, 0.1, 0.2);
+          vec3 color2 = vec3(0.1, 0.05, 0.25);
+
+          color = mix(color1, color2, finalNoise);
+
+          // 简化的高光效果
+          if(u_quality > 0.7) {
+            float highlight = pow(finalNoise, 3.0) * 0.4;
+            color += vec3(0.2, 0.3, 0.6) * highlight;
+          }
         } else {
-          // 亮色主题 - 白色到浅蓝色渐变
-          vec3 color1 = vec3(0.95, 0.98, 1.0); // 近白色
-          vec3 color2 = vec3(0.8, 0.9, 1.0);   // 浅蓝色
-          vec3 color3 = vec3(0.9, 0.95, 1.0);  // 浅灰蓝色
-          
-          // 使用波浪效果来混合颜色
-          float waveBlend = (sin(time * 0.2) * 0.5 + 0.5) * 0.3;
-          color = mix(mix(color1, color2, noise1 + waveBlend), color3, noise2);
-          
-          // 添加一些蓝色亮点
-          float highlight = pow(noise3, 5.0) * 0.2;
-          color += vec3(0.0, 0.3, 0.8) * highlight;
-          
-          // 添加波浪光效
-          float waveHighlight = smoothstep(0.3, 0.7, sin(st.y * 20.0 + time * 2.0) * 0.5 + 0.5);
-          color += vec3(0.0, 0.2, 0.4) * waveHighlight * 0.05;
+          // 亮色主题 - 简化的渐变
+          vec3 color1 = vec3(0.95, 0.98, 1.0);
+          vec3 color2 = vec3(0.85, 0.92, 1.0);
+
+          color = mix(color1, color2, finalNoise);
+
+          // 简化的高光效果
+          if(u_quality > 0.7) {
+            float highlight = pow(finalNoise, 3.0) * 0.15;
+            color += vec3(0.0, 0.2, 0.5) * highlight;
+          }
         }
-        
-        // 添加渐变效果
-        color = mix(color, color * (0.8 + 0.2 * sin(st.y * 3.14159 + time)), 0.1);
-        
-        // 添加波纹效果
-        float ripple = sin(length(st - vec2(0.5)) * 20.0 - time * 3.0) * 0.03;
-        color += (isDarkTheme ? vec3(0.2, 0.3, 0.5) : vec3(0.0, 0.1, 0.3)) * ripple;
-        
-        // 边缘淡化效果
-        float vignette = smoothstep(0.0, 0.7, 0.7 - length(st - vec2(0.5, 0.5)));
-        color *= 0.8 + 0.2 * vignette;
-        
-        gl_FragColor = vec4(color, 0.9); // 轻微透明度
+
+        // 简化的边缘效果
+        float vignette = 1.0 - length(st - vec2(0.5)) * 0.3;
+        color *= vignette;
+
+        gl_FragColor = vec4(color, 0.85);
       }
     `;
     
@@ -247,45 +234,73 @@ function BannerBackground() {
     const timeUniformLocation = gl.getUniformLocation(program, "u_time");
     const resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
     const isDarkUniformLocation = gl.getUniformLocation(program, "u_isDark");
-    
+    const qualityUniformLocation = gl.getUniformLocation(program, "u_quality");
+
     // 启用属性
     gl.enableVertexAttribArray(positionAttributeLocation);
     gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-    
-    // 动画循环
+
     let startTime = Date.now();
-    let animationFrameId;
-    
-    function render() {
-      const currentTime = (Date.now() - startTime) / 1000; // 转换为秒
-      
+    let lastFrameTime = 0;
+    const targetFrameTime = 1000 / performanceRef.current.targetFPS;
+    let isVisible = true;
+
+    // 页面可见性检测
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    function render(currentTime) {
+      if (currentTime - lastFrameTime < targetFrameTime) {
+        animationRef.current = requestAnimationFrame(render);
+        return;
+      }
+
+      if (!isVisible) {
+        animationRef.current = requestAnimationFrame(render);
+        return;
+      }
+
+      lastFrameTime = currentTime;
+      const timeInSeconds = (currentTime - startTime) / 1000;
+
       gl.useProgram(program);
-      gl.uniform1f(timeUniformLocation, currentTime);
+      gl.uniform1f(timeUniformLocation, timeInSeconds);
       gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);
       gl.uniform1i(isDarkUniformLocation, isDarkTheme ? 1 : 0);
-      
+      gl.uniform1f(qualityUniformLocation, performanceRef.current.quality);
+
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      
-      animationFrameId = requestAnimationFrame(render);
+
+      animationRef.current = requestAnimationFrame(render);
     }
-    
-    render();
+
+    animationRef.current = requestAnimationFrame(render);
     
     return () => {
       window.removeEventListener('resize', setCanvasSize);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clearTimeout(resizeTimeout);
+
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+
       // 清理WebGL资源
-      gl.deleteProgram(program);
-      gl.deleteShader(vertexShader);
-      gl.deleteShader(fragmentShader);
-      gl.deleteBuffer(positionBuffer);
+      if (gl && program) {
+        gl.deleteProgram(program);
+        gl.deleteShader(vertexShader);
+        gl.deleteShader(fragmentShader);
+        gl.deleteBuffer(positionBuffer);
+      }
     };
   }, [isDarkTheme]);
   
   return <canvas ref={canvasRef} className={styles.bannerBackground} />;
 }
 
-function HomepageBanner() {
+function HomepageBanner({ performanceSettings }) {
   const {siteConfig} = useDocusaurusContext();
   
   const handleScrollDown = () => {
@@ -294,7 +309,8 @@ function HomepageBanner() {
   
   return (
     <header className={styles.banner}>
-      <BannerBackground />
+      {/* 根据性能设置决定是否显示WebGL背景 */}
+      {performanceSettings?.enableWebGL !== false && <BannerBackground />}
       <div className={styles.bannerBackdrop}></div>
       
       <div className={styles.bannerContainer}>
@@ -478,26 +494,50 @@ function SupportSection() {
 }
 
 export default function Home() {
+  const [performanceSettings, setPerformanceSettings] = useState(null);
+
+  // 性能监控回调
+  const handlePerformanceChange = (perfData) => {
+    console.log('Performance update:', perfData);
+
+    // 根据性能数据调整设置
+    if (perfData.isLowPerformance && !performanceSettings?.lowPerformanceMode) {
+      setPerformanceSettings(prev => ({
+        ...prev,
+        lowPerformanceMode: true,
+        enableWebGL: false
+      }));
+    }
+  };
+
   // 设置视口高度
   useEffect(() => {
     // 初始设置
     setViewportHeight();
-    
-    // 监听窗口大小变化
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
-    
+
+    // 检测设备性能
+    const devicePerf = PerformanceUtils.detectDevicePerformance();
+    const recommendedSettings = PerformanceUtils.getRecommendedSettings(devicePerf);
+    setPerformanceSettings(recommendedSettings);
+
+    // 监听窗口大小变化 - 使用防抖优化
+    const debouncedResize = PerformanceUtils.debounce(setViewportHeight, 100);
+
+    window.addEventListener('resize', debouncedResize);
+    window.addEventListener('orientationchange', debouncedResize);
+
     // 清理函数
     return () => {
-      window.removeEventListener('resize', setViewportHeight);
-      window.removeEventListener('orientationchange', setViewportHeight);
+      window.removeEventListener('resize', debouncedResize);
+      window.removeEventListener('orientationchange', debouncedResize);
     };
   }, []);
 
   return (
     <Layout title="主页" description="Post系列插件 - 为您的Minecraft服务器提供实用功能增强">
+      <PerformanceMonitor onPerformanceChange={handlePerformanceChange} />
       <main className={styles.main}>
-        <HomepageBanner />
+        <HomepageBanner performanceSettings={performanceSettings} />
         <FeatureSection />
         <PluginSection />
         <SupportSection />

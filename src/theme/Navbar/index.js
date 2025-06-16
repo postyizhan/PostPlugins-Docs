@@ -110,16 +110,25 @@ function CustomNavbar() {
     }
   };
 
-  // 监听滚动事件，添加导航栏滚动效果
+  // 优化的滚动事件监听 - 添加节流
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 20;
+          if (isScrolled !== scrolled) {
+            setScrolled(isScrolled);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // 使用 passive 监听器提高性能
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -627,26 +636,6 @@ function CustomNavbar() {
                 English
               </Link>
             </div>
-          </div>
-          
-          <div className={styles.mobileMenuDivider}></div>
-          
-          <div className={styles.mobileMenuSection}>
-            <div className={styles.mobileMenuSectionTitle}>侧边栏</div>
-            <button
-              className={styles.mobileSidebarToggle}
-              onClick={() => {
-                toggleMobileSidebar();
-                setIsMenuOpen(false);
-              }}
-            >
-              {isMobileSidebarOpen ? '隐藏侧边栏' : '显示侧边栏'}
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 12H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 18H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
           </div>
           
           <div className={styles.mobileMenuDivider}></div>
