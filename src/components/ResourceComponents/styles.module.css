@@ -7,6 +7,7 @@
   position: relative;
   width: 100%;
   max-width: none;
+  box-sizing: border-box;
 }
 
 /* 全宽header容器 */
@@ -575,6 +576,9 @@
   .resourceContent {
     flex-direction: column;
     padding: 0 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
   
   .resourcePageSidebar {
@@ -585,15 +589,21 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .resourceActions {
     margin-left: 0;
     margin-top: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .featuresGrid {
     grid-template-columns: 1fr;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .resourceIcon {
@@ -603,28 +613,67 @@
   
   .resourceTitle {
     font-size: 1.85rem;
+    width: 100%;
+    word-break: break-word;
   }
   
   .resourceDescription {
     font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .resourceHeaderFull,
+  .resourceHeader,
+  .resourceHeaderBackdrop {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .resourcePageWrapper * {
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
 @media (max-width: 768px) {
   .resourceHeaderInner {
     padding: 1.5rem 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .resourceTitle {
     font-size: 1.7rem;
+    width: 100%;
   }
   
   .screenshotGrid {
     grid-template-columns: 1fr;
+    width: 100%;
   }
   
   .resourceContent {
     padding: 0 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .resourceContentLeft {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* 确保移动端内容不溢出 */
+  .resourceMeta,
+  .resourceMetaInfo,
+  .metaItem {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .metaItem {
+    flex-shrink: 0;
   }
 }
 

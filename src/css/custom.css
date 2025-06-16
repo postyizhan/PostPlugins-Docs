@@ -150,6 +150,8 @@ a:hover {
 
 .container {
   max-width: 1140px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -376,4 +378,29 @@ aside[class*="resourcePageSidebar_"]::-webkit-scrollbar {
   display: flex !important;
   align-items: flex-start !important;
   position: relative !important;
+}
+
+/* 全局溢出控制，确保移动端没有水平滚动条 */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* 移动端溢出控制 */
+@media (max-width: 996px) {
+  .container,
+  .main-wrapper,
+  .markdown,
+  article,
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }

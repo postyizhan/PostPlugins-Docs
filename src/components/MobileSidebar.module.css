@@ -95,6 +95,7 @@
 
 .mobileSidebarCloseButton:hover {
   color: var(--ifm-color-emphasis-700);
+  background: transparent;
 }
 
 /* 侧边栏内容 */
@@ -143,16 +144,18 @@
   border-left: 2px solid transparent;
   transition: all 0.15s ease;
   font-size: 0.85rem;
+  background: transparent;
 }
 
 .mobileSidebarCategoryActive {
   color: var(--ifm-menu-color-active);
-  background-color: var(--ifm-menu-color-background-active);
-  border-left-color: var(--ifm-menu-color-active);
+  background: transparent;
+  border-left-color: var(--ifm-color-primary);
 }
 
 .mobileSidebarCategory:hover {
-  background-color: var(--ifm-menu-color-background-hover);
+  background: transparent;
+  color: var(--ifm-color-primary);
 }
 
 .mobileSidebarCategoryIcon {
@@ -198,38 +201,39 @@
   padding: 0.35rem 0.75rem;
   color: var(--ifm-menu-color);
   text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: all 0.15s ease;
   font-size: 0.8rem;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  background: transparent;
 }
 
 .mobileSidebarLink::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0.75rem;
-  right: 100%;
-  height: 1px;
-  background-color: var(--ifm-menu-color-active);
-  transition: right 0.2s ease;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ifm-color-primary);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.2s;
+  pointer-events: none;
 }
 
 .mobileSidebarLink:hover {
-  background-color: var(--ifm-menu-color-background-hover);
-  color: var(--ifm-menu-color-hover);
-  text-decoration: none;
+  color: var(--ifm-color-primary);
+  background: transparent;
 }
 
 .mobileSidebarLink:hover::after {
-  right: 0.75rem;
+  opacity: 0;
 }
 
 .mobileSidebarLinkActive {
-  background-color: var(--ifm-menu-color-background-active);
-  color: var(--ifm-menu-color-active);
-  border-left-color: var(--ifm-menu-color-active);
+  color: var(--ifm-color-primary);
+  border-left-color: var(--ifm-color-primary);
+  background: transparent;
 }
 
 /* 移动端适配 */

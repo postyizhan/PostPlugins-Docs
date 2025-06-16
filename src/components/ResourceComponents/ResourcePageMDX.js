@@ -161,6 +161,29 @@ export default function ResourcePageMDX(props) {
           padding: 0 !important;
           max-width: 100% !important;
         }
+        
+        /* 移动端样式适配 */
+        @media (max-width: 996px) {
+          .resource-page-container,
+          .resource-page-container > div,
+          [data-resource-page="true"],
+          [data-resource-page="true"] > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+          }
+          
+          .markdown > div {
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+          }
+          
+          img {
+            max-width: 100% !important;
+            height: auto !important;
+          }
+        }
       `;
       document.head.appendChild(styleEl);
     };
