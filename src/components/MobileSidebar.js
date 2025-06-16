@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from '@docusaurus/Link';
 import { useLocation } from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { useAllDocsData } from '@docusaurus/plugin-content-docs/client';
+import { useAllDocsData, useDocsData } from '@docusaurus/plugin-content-docs/client';
+import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 // 导入侧边栏配置
 import sidebarConfig from '../../sidebars';
 import styles from './MobileSidebar.module.css';
@@ -12,38 +13,50 @@ function MobileSidebar({ isOpen, onClose }) {
   const [expandedCategories, setExpandedCategories] = useState({});
   const { siteConfig } = useDocusaurusContext();
   const allDocsData = useAllDocsData();
-  
+
+  // 尝试获取默认文档数据
+  let docsData = null;
+  try {
+    docsData = useDocsData('default');
+  } catch (error) {
+    console.log('Could not get docs data:', error);
+  }
+
   // 直接使用sidebar配置
   const mainSidebar = sidebarConfig.tutorialSidebar || [];
-  
+
   // 获取所有文档数据，用于查找标题
   const allDocs = React.useMemo(() => {
-    const docsData = {};
-    
-    // 从所有版本的文档中收集数据
-    Object.keys(allDocsData).forEach(pluginId => {
-      const docsPlugin = allDocsData[pluginId];
-      const versions = docsPlugin.versions || [];
-      
-      versions.forEach(version => {
-        const docs = version.docs || [];
-        docs.forEach(doc => {
-          // 调试输出文档结构
-          if (doc.id.includes('PostSpawner/command') || doc.id.includes('PostDrop/permission')) {
-            console.log('Document structure:', doc.id, doc);
-          }
-          
-          // 存储文档数据，包括frontmatter
-          docsData[doc.id] = {
-            ...doc,
-            frontMatter: doc.frontMatter || {}
-          };
+    const docsMap = {};
+
+    // 首先尝试从 docsData 获取（这通常包含更完整的元数据）
+    if (docsData && docsData.versions) {
+      docsData.versions.forEach(version => {
+        if (version.docs) {
+          version.docs.forEach(doc => {
+            docsMap[doc.id] = doc;
+          });
+        }
+      });
+    }
+
+    // 如果上面没有获取到数据，回退到 allDocsData
+    if (Object.keys(docsMap).length === 0) {
+      Object.keys(allDocsData).forEach(pluginId => {
+        const docsPlugin = allDocsData[pluginId];
+        const versions = docsPlugin.versions || [];
+
+        versions.forEach(version => {
+          const docs = version.docs || [];
+          docs.forEach(doc => {
+            docsMap[doc.id] = doc;
+          });
         });
       });
-    });
-    
-    return docsData;
-  }, [allDocsData]);
+    }
+
+    return docsMap;
+  }, [allDocsData, docsData]);
 
   // 判断链接是否激活
   const isActive = (to) => {
@@ -57,51 +70,64 @@ function MobileSidebar({ isOpen, onClose }) {
     return `/${id.replace(/^\//, '')}`;
   };
   
-  // 获取文档标题
+  // 获取文档标题 - 使用预定义映射确保正确显示
   const getDocTitle = useCallback((id) => {
     if (!id) return '';
-    
-    // 调试输出
-    console.log(`Getting title for: ${id}`);
-    
-    // 尝试从文档数据中获取标题
-    const doc = allDocs[id];
-    console.log(`Doc data:`, doc);
-    
-    // 首先尝试从frontMatter中获取title
-    if (doc && doc.frontMatter && doc.frontMatter.title) {
-      console.log(`Found frontMatter title: ${doc.frontMatter.title}`);
-      return doc.frontMatter.title;
-    }
-    
-    // 然后尝试从doc.title获取
-    if (doc && doc.title) {
-      console.log(`Found doc.title: ${doc.title}`);
-      return doc.title;
-    }
-    
-    // 对于特定的文件路径，手动设置中文标题
-    const manualTitles = {
-      'PostSpawner/intro': '基础介绍',
+
+    // 预定义的标题映射，基于 Markdown 文件的 frontmatter title
+    const titleMap = {
+      // 主页
+      'intro': 'PostPlugins',
+
+      // PostSpawner
+      'PostSpawner/intro': '开始',
       'PostSpawner/command': '命令',
       'PostSpawner/permission': '权限',
       'PostSpawner/items': '物品设置',
-      'PostDrop/intro': '基础介绍',
+
+      // PostDrop
+      'PostDrop/intro': '开始',
       'PostDrop/command': '命令',
       'PostDrop/permission': '权限',
-      'PostDrop/PlaceholderAPI': 'PlaceholderAPI'
+      'PostDrop/PlaceholderAPI': 'PlaceholderAPI',
+
+      // PostWarp
+      'PostWarp/intro': '开始',
+
+      // 组件
+      'components/index': '组件',
+      'components/badges': '徽章',
+      'components/discord-badge-example': 'Discord 徽章示例',
+      'components/more-badges': '更多徽章',
+      'components/usage-guide': '使用指南'
     };
-    
-    if (manualTitles[id]) {
-      console.log(`Using manual title: ${manualTitles[id]}`);
-      return manualTitles[id];
+
+    // 首先尝试从预定义映射获取
+    if (titleMap[id]) {
+      return titleMap[id];
     }
-    
-    // 如果没有找到，返回格式化的ID作为备选
+
+    // 尝试从文档数据中获取标题（作为备选）
+    const doc = allDocs[id];
+
+    // 尝试从 frontMatter 中获取 title
+    if (doc && doc.frontMatter && doc.frontMatter.title) {
+      return doc.frontMatter.title;
+    }
+
+    // 尝试从 doc.title 获取
+    if (doc && doc.title) {
+      return doc.title;
+    }
+
+    // 尝试从 metadata 中获取
+    if (doc && doc.metadata && doc.metadata.title) {
+      return doc.metadata.title;
+    }
+
+    // 如果都没有找到，返回格式化的 ID 作为备选
     const lastSegment = id.split('/').pop();
-    const formattedTitle = lastSegment.replace(/-/g, ' ');
-    console.log(`Using formatted title: ${formattedTitle}`);
-    return formattedTitle;
+    return lastSegment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }, [allDocs]);
 
   // 切换分类展开/折叠
@@ -142,12 +168,9 @@ function MobileSidebar({ isOpen, onClose }) {
     if (typeof item === 'string') {
       const docLink = getDocLink(item);
       const title = getDocTitle(item);
-      
-      // 调试输出
-      console.log(`Rendering item: ${item}, title: ${title}`);
-      
+
       return (
-        <Link 
+        <Link
           key={item}
           to={docLink}
           className={`${styles.mobileSidebarLink} ${isActive(docLink) ? styles.mobileSidebarLinkActive : ''}`}
@@ -194,12 +217,9 @@ function MobileSidebar({ isOpen, onClose }) {
     if (item.id) {
       const docLink = getDocLink(item.id);
       const title = item.label || getDocTitle(item.id);
-      
-      // 调试输出
-      console.log(`Rendering item with id: ${item.id}, title: ${title}`);
-      
+
       return (
-        <Link 
+        <Link
           key={item.id}
           to={docLink}
           className={`${styles.mobileSidebarLink} ${isActive(docLink) ? styles.mobileSidebarLinkActive : ''}`}

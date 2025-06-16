@@ -311,6 +311,36 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* 统一按钮基础样式 */
+.navbarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.04);
+  border: none;
+  border-radius: 50%;
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+[data-theme='dark'] .navbarButton {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navbarButton:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] .navbarButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 /* 语言切换 */
 .localeDropdown {
   position: relative;
@@ -324,21 +354,19 @@
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
-  background: rgba(0, 0, 0, 0.04);
+  margin: 0;
+  background: transparent;
   border: none;
   border-radius: 50%;
   color: var(--ifm-navbar-link-color);
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-[data-theme='dark'] .localeToggle {
-  background: rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
 }
 
 .localeToggle:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
+  transform: translateY(-1px);
 }
 
 [data-theme='dark'] .localeToggle:hover {
@@ -394,28 +422,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
   margin: 0 0.25rem;
-  color: var(--ifm-navbar-link-color);
   background: transparent;
   border: none;
   border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-[data-theme='dark'] .themeToggle {
   color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .themeToggle:hover {
   background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
+  transform: translateY(-1px);
 }
 
 [data-theme='dark'] .themeToggle:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* 在移动端隐藏主题切换按钮 */
@@ -576,17 +602,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
   margin: 0 0.25rem;
-  color: var(--ifm-navbar-link-color);
+  background: transparent;
+  border: none;
   border-radius: 50%;
-  transition: all 0.2s;
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .githubLink:hover {
   background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] .githubLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* 移动端菜单按钮 */
@@ -598,18 +633,16 @@
   height: 2.25rem;
   padding: 0;
   margin-left: 0.25rem;
-  background: rgba(0, 0, 0, 0.04);
+  background: transparent;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-}
-
-[data-theme='dark'] .menuButton {
-  background: rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
 }
 
 .menuButton:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: var(--ifm-color-emphasis-200);
+  transform: translateY(-1px);
 }
 
 [data-theme='dark'] .menuButton:hover {

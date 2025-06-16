@@ -40,10 +40,21 @@
 }
 
 /* Global styles */
+* {
+  box-sizing: border-box;
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  overflow-x: hidden; /* 防止水平滚动 */
+}
+
+body {
+  overflow-x: hidden; /* 防止水平滚动 */
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* 移除所有链接 hover 时的下划线 */
@@ -76,6 +87,9 @@ a:hover {
   border-bottom: 1px solid var(--ifm-toc-border-color);
   padding: 0 !important;
   background-color: var(--ifm-background-color) !important;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 [data-theme='dark'] .navbar {
@@ -88,6 +102,15 @@ a:hover {
   margin: 0 auto;
   height: 100%;
   padding: 0 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 移动端导航栏调整 */
+@media (max-width: 996px) {
+  .navbar__inner {
+    padding: 0 1rem;
+  }
 }
 
 .navbar__items {
@@ -150,6 +173,20 @@ a:hover {
 
 .container {
   max-width: 1140px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* 确保所有主要容器不会导致水平滚动 */
+.main-wrapper,
+.container-fluid,
+[class*="docMainContainer_"],
+[class*="docPage_"] {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6 {
