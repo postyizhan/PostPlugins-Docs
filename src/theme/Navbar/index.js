@@ -129,16 +129,25 @@ function CustomNavbar() {
     }
   };
 
-  // 监听滚动事件，添加导航栏滚动效果
+  // 优化的滚动事件监听 - 添加节流
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 20;
+          if (isScrolled !== scrolled) {
+            setScrolled(isScrolled);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // 使用 passive 监听器提高性能
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -684,7 +693,6 @@ function CustomNavbar() {
               </Link>
             </div>
           </div>
-
           
           <div className={styles.mobileMenuDivider}></div>
           

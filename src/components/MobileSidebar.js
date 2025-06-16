@@ -14,49 +14,30 @@ function MobileSidebar({ isOpen, onClose }) {
   const { siteConfig } = useDocusaurusContext();
   const allDocsData = useAllDocsData();
 
-  // 尝试获取默认文档数据
-  let docsData = null;
-  try {
-    docsData = useDocsData('default');
-  } catch (error) {
-    console.log('Could not get docs data:', error);
-  }
-
-  // 直接使用sidebar配置
+  // 直接使用侧边栏配置
   const mainSidebar = sidebarConfig.tutorialSidebar || [];
 
   // 获取所有文档数据，用于查找标题
   const allDocs = React.useMemo(() => {
     const docsMap = {};
 
-    // 首先尝试从 docsData 获取（这通常包含更完整的元数据）
-    if (docsData && docsData.versions) {
-      docsData.versions.forEach(version => {
-        if (version.docs) {
-          version.docs.forEach(doc => {
-            docsMap[doc.id] = doc;
-          });
-        }
-      });
-    }
+    Object.keys(allDocsData).forEach(pluginId => {
+      const docsPlugin = allDocsData[pluginId];
+      const versions = docsPlugin.versions || [];
 
-    // 如果上面没有获取到数据，回退到 allDocsData
-    if (Object.keys(docsMap).length === 0) {
-      Object.keys(allDocsData).forEach(pluginId => {
-        const docsPlugin = allDocsData[pluginId];
-        const versions = docsPlugin.versions || [];
-
-        versions.forEach(version => {
-          const docs = version.docs || [];
-          docs.forEach(doc => {
-            docsMap[doc.id] = doc;
-          });
+      versions.forEach(version => {
+        const docs = version.docs || [];
+        docs.forEach(doc => {
+          docsMap[doc.id] = {
+            ...doc,
+            frontMatter: doc.frontMatter || {}
+          };
         });
       });
-    }
+    });
 
     return docsMap;
-  }, [allDocsData, docsData]);
+  }, [allDocsData]);
 
   // 判断链接是否激活
   const isActive = (to) => {
@@ -70,31 +51,22 @@ function MobileSidebar({ isOpen, onClose }) {
     return `/${id.replace(/^\//, '')}`;
   };
   
-  // 获取文档标题 - 使用预定义映射确保正确显示
+  // 获取文档标题 - 使用预定义的标题映射
   const getDocTitle = useCallback((id) => {
     if (!id) return '';
 
     // 预定义的标题映射，基于 Markdown 文件的 frontmatter title
     const titleMap = {
-      // 主页
       'intro': 'PostPlugins',
-
-      // PostSpawner
       'PostSpawner/intro': '开始',
       'PostSpawner/command': '命令',
       'PostSpawner/permission': '权限',
       'PostSpawner/items': '物品设置',
-
-      // PostDrop
       'PostDrop/intro': '开始',
       'PostDrop/command': '命令',
       'PostDrop/permission': '权限',
       'PostDrop/PlaceholderAPI': 'PlaceholderAPI',
-
-      // PostWarp
       'PostWarp/intro': '开始',
-
-      // 组件
       'components/index': '组件',
       'components/badges': '徽章',
       'components/discord-badge-example': 'Discord 徽章示例',
@@ -107,25 +79,17 @@ function MobileSidebar({ isOpen, onClose }) {
       return titleMap[id];
     }
 
-    // 尝试从文档数据中获取标题（作为备选）
+    // 尝试从文档数据中获取标题
     const doc = allDocs[id];
-
-    // 尝试从 frontMatter 中获取 title
     if (doc && doc.frontMatter && doc.frontMatter.title) {
       return doc.frontMatter.title;
     }
 
-    // 尝试从 doc.title 获取
     if (doc && doc.title) {
       return doc.title;
     }
 
-    // 尝试从 metadata 中获取
-    if (doc && doc.metadata && doc.metadata.title) {
-      return doc.metadata.title;
-    }
-
-    // 如果都没有找到，返回格式化的 ID 作为备选
+    // 如果没有找到，返回格式化的ID作为备选
     const lastSegment = id.split('/').pop();
     return lastSegment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }, [allDocs]);
@@ -185,31 +149,35 @@ function MobileSidebar({ isOpen, onClose }) {
     if (item.type === 'category') {
       const isExpanded = expandedCategories[item.label] || false;
       return (
-        <div key={item.label} className={styles.mobileSidebarItem}>
-          <div 
+        <>
+          <div
             className={`${styles.mobileSidebarCategory} ${
-              item.items?.some(subItem => isActive(getDocLink(subItem.id || subItem))) 
-                ? styles.mobileSidebarCategoryActive 
+              item.items?.some(subItem => isActive(getDocLink(subItem.id || subItem)))
+                ? styles.mobileSidebarCategoryActive
                 : ''
             }`}
             onClick={() => toggleCategory(item.label)}
           >
             <span>{item.label}</span>
-            <svg 
-              className={`${styles.mobileSidebarCategoryIcon} ${isExpanded ? styles.mobileSidebarCategoryIconRotated : ''}`} 
-              width="14" 
-              height="14" 
-              viewBox="0 0 16 16" 
-              fill="none" 
+            <svg
+              className={`${styles.mobileSidebarCategoryIcon} ${isExpanded ? styles.mobileSidebarCategoryIconRotated : ''}`}
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <div className={`${styles.mobileSidebarSubItems} ${isExpanded ? styles.mobileSidebarSubItemsExpanded : ''}`}>
-            {item.items?.map(subItem => renderSidebarItem(subItem))}
+            {item.items?.map((subItem, subIndex) => (
+              <div key={subIndex}>
+                {renderSidebarItem(subItem)}
+              </div>
+            ))}
           </div>
-        </div>
+        </>
       );
     }
     
@@ -248,7 +216,11 @@ function MobileSidebar({ isOpen, onClose }) {
         </div>
         <div className={styles.mobileSidebarContent}>
           {mainSidebar && mainSidebar.length > 0 ? (
-            mainSidebar.map(item => renderSidebarItem(item))
+            mainSidebar.map((item, index) => (
+              <div key={index} className={styles.mobileSidebarItem}>
+                {renderSidebarItem(item)}
+              </div>
+            ))
           ) : (
             <div className={styles.mobileSidebarEmpty}>
               <p>暂无导航内容</p>
