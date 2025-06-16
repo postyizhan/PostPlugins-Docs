@@ -23,6 +23,11 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-link-hover-decoration: none;
   --doc-sidebar-width: 18rem;
+
+  --animation-duration-fast: 0.15s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 0.5s;
+  --animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -39,11 +44,39 @@
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* Global styles */
+/* Global styles - 性能优化 */
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+}
+
+/* 全局性能优化 */
+* {
+  /* 减少重绘和回流 */
+  box-sizing: border-box;
+}
+
+/* 优化动画性能 */
+*,
+*::before,
+*::after {
+  /* 为可能的动画元素启用硬件加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 减少不必要的动画 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* 移除所有链接 hover 时的下划线 */
