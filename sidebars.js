@@ -26,7 +26,7 @@ const sidebars = {
       type: 'category',
       label: 'PostWarp',
       items: [
-        'PostWarp/intro',
+        'PostWarps/intro',
       ],
     },
   ],
