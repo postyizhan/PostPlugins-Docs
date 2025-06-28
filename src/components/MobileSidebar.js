@@ -19,14 +19,25 @@ function MobileSidebar({ isOpen, onClose }) {
     'PostSpawner/command': '命令',
     'PostSpawner/permission': '权限',
     'PostSpawner/items': '物品设置',
+    'PostSpawner/action': '动作配置',
     'PostDrop/intro': '开始',
     'PostDrop/command': '命令',
     'PostDrop/permission': '权限',
     'PostDrop/PlaceholderAPI': 'PlaceholderAPI',
     'PostWarps/intro': '开始',
+    'PostWarps/commands': '命令',
+    'PostWarps/permission': '权限',
+    'PostWarps/menu/README': '菜单配置',
+    'PostWarps/menu/layout': '布局配置',
+    'PostWarps/menu/icon': '图标配置',
+    'PostWarps/menu/sub-icon': '子图标',
+    'PostWarps/placeholder/PlaceHolderAPI': 'PlaceHolderAPI',
+    'PostWarps/placeholder/build-in': '内置占位符',
     'components/index': '组件库',
     'components/badges': '徽章组件',
-    'components/usage-guide': '使用指南'
+    'components/usage-guide': '使用指南',
+    'components/discord-badge-example': 'Discord 徽章示例',
+    'components/more-badges': '更多徽章'
   };
 
   // 判断链接是否激活
@@ -37,13 +48,13 @@ function MobileSidebar({ isOpen, onClose }) {
 
   // 获取文档链接
   const getDocLink = (id) => {
-    if (!id) return '/';
+    if (!id || typeof id !== 'string') return '/';
     return `/${id.replace(/^\//, '')}`;
   };
   
   // 获取文档标题
   const getDocTitle = useCallback((id) => {
-    if (!id) return '';
+    if (!id || typeof id !== 'string') return '';
 
     // 直接从映射中获取标题
     if (docTitles[id]) {
@@ -70,7 +81,10 @@ function MobileSidebar({ isOpen, onClose }) {
       mainSidebar.forEach(item => {
         if (item.type === 'category') {
           const shouldExpand = item.items?.some(subItem => {
-            const docLink = getDocLink(subItem.id || subItem);
+            // 处理嵌套分类和简单字符串
+            const itemId = typeof subItem === 'string' ? subItem : subItem.id;
+            if (!itemId || typeof itemId !== 'string') return false;
+            const docLink = getDocLink(itemId);
             return path.startsWith(docLink);
           });
           
@@ -113,8 +127,11 @@ function MobileSidebar({ isOpen, onClose }) {
         <div key={item.label} className={styles.mobileSidebarItem}>
           <div 
             className={`${styles.mobileSidebarCategory} ${
-              item.items?.some(subItem => isActive(getDocLink(subItem.id || subItem))) 
-                ? styles.mobileSidebarCategoryActive 
+              item.items?.some(subItem => {
+                const itemId = typeof subItem === 'string' ? subItem : subItem.id;
+                return itemId && typeof itemId === 'string' && isActive(getDocLink(itemId));
+              })
+                ? styles.mobileSidebarCategoryActive
                 : ''
             }`}
             onClick={() => toggleCategory(item.label)}

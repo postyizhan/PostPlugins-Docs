@@ -24,9 +24,28 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'PostWarp',
+      label: 'PostWarps',
       items: [
         'PostWarps/intro',
+        'PostWarps/commands',
+        'PostWarps/permission',
+        {
+          type: 'category',
+          label: '菜单',
+          items: [
+            'PostWarps/menu/layout',
+            'PostWarps/menu/icon',
+            'PostWarps/menu/sub-icon',
+          ],
+        },
+        {
+          type: 'category',
+          label: '占位符',
+          items: [
+            'PostWarps/placeholder/PlaceHolderAPI',
+            'PostWarps/placeholder/build-in',
+          ],
+        },
       ],
     },
   ],
