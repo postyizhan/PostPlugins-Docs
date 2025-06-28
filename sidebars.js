@@ -31,11 +31,13 @@ const sidebars = {
         'PostWarps/permission',
         {
           type: 'category',
-          label: '菜单',
+          label: '菜单配置',
           items: [
             'PostWarps/menu/layout',
             'PostWarps/menu/icon',
             'PostWarps/menu/sub-icon',
+            'PostWarps/menu/action',
+            'PostWarps/menu/warp-action',
           ],
         },
         {
