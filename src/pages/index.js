@@ -110,79 +110,75 @@ function BannerBackground() {
       uniform bool u_isDark;
       uniform float u_quality;
 
-      // 噪声函数
-      float hash(vec2 p) {
-        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+      // 简单而美观的径向渐变
+      float radialGradient(vec2 st, vec2 center, float radius) {
+        float dist = length(st - center);
+        return smoothstep(radius, 0.0, dist);
       }
 
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
-
-        float a = hash(i);
-        float b = hash(i + vec2(1.0, 0.0));
-        float c = hash(i + vec2(0.0, 1.0));
-        float d = hash(i + vec2(1.0, 1.0));
-
-        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-      }
-
-      float wave(vec2 position, float time, float speed, float frequency) {
-        return sin(position.y * frequency + time * speed) * 0.5 + 0.5;
+      // 柔和的波浪渐变
+      float waveGradient(vec2 st, float frequency) {
+        return sin(st.x * frequency) * cos(st.y * frequency) * 0.5 + 0.5;
       }
       
       void main() {
         vec2 st = v_texCoord;
         st.x *= u_resolution.x / u_resolution.y;
 
-        float time = u_time * 0.15;
+        // 创建三个彩色光斑中心
+        vec2 pos1 = vec2(0.25, 0.6);
+        vec2 pos2 = vec2(0.75, 0.4);
+        vec2 pos3 = vec2(0.5, 0.2);
 
-        // 波浪效果 - 根据质量调整
-        float wave1 = wave(st, time, 0.4, 8.0);
-        float wave2 = u_quality > 0.7 ? wave(st, time, 0.2, 12.0) : wave1 * 0.5;
+        // 创建大型柔和光斑
+        float blob1 = radialGradient(st, pos1, 0.8);
+        float blob2 = radialGradient(st, pos2, 0.9);
+        float blob3 = radialGradient(st, pos3, 0.7);
 
-        // 简化的噪声计算
-        vec2 noiseUV = st + vec2(wave1 * 0.1, wave2 * 0.1);
-        float noise1 = noise(noiseUV * 3.0 + time * 0.1);
-        float noise2 = u_quality > 0.7 ? noise(noiseUV * 2.0 - time * 0.08) : noise1 * 0.8;
+        // 添加波浪纹理
+        float wave = waveGradient(st, 8.0) * 0.05;
 
-        // 简化的噪声混合
-        float finalNoise = mix(noise1, noise2, 0.6);
-        
-        // 优化的颜色计算
         vec3 color;
         if(u_isDark) {
-          // 暗色主题 - 简化的渐变
-          vec3 color1 = vec3(0.05, 0.1, 0.2);
-          vec3 color2 = vec3(0.1, 0.05, 0.25);
-
-          color = mix(color1, color2, finalNoise);
-
-          // 简化的高光效果
-          if(u_quality > 0.7) {
-            float highlight = pow(finalNoise, 3.0) * 0.4;
-            color += vec3(0.2, 0.3, 0.6) * highlight;
-          }
+          // 暗色主题 - 鲜艳的彩色渐变
+          vec3 baseColor = vec3(0.05, 0.07, 0.15);  // 深色基底
+          
+          // 三个鲜艳的彩色光斑
+          vec3 color1 = vec3(0.2, 0.4, 0.95);   // 鲜艳蓝色
+          vec3 color2 = vec3(0.9, 0.2, 0.7);    // 鲜艳粉红
+          vec3 color3 = vec3(0.3, 0.8, 0.9);    // 鲜艳青色
+          
+          // 混合光斑
+          color = baseColor;
+          color += color1 * blob1 * 0.7;
+          color += color2 * blob2 * 0.6;
+          color += color3 * blob3 * 0.5;
+          color += wave;
+          
         } else {
-          // 亮色主题 - 简化的渐变
-          vec3 color1 = vec3(0.95, 0.98, 1.0);
-          vec3 color2 = vec3(0.85, 0.92, 1.0);
-
-          color = mix(color1, color2, finalNoise);
-
-          // 简化的高光效果
-          if(u_quality > 0.7) {
-            float highlight = pow(finalNoise, 3.0) * 0.15;
-            color += vec3(0.0, 0.2, 0.5) * highlight;
-          }
+          // 亮色主题 - 柔和的彩色渐变
+          vec3 baseColor = vec3(0.97, 0.98, 1.0);   // 浅色基底
+          
+          // 三个柔和的彩色光斑
+          vec3 color1 = vec3(0.6, 0.75, 1.0);   // 柔和蓝色
+          vec3 color2 = vec3(1.0, 0.7, 0.85);   // 柔和粉色
+          vec3 color3 = vec3(0.7, 0.95, 0.95);  // 柔和青色
+          
+          // 混合光斑（减色模式）
+          color = baseColor;
+          color = mix(color, color1, blob1 * 0.4);
+          color = mix(color, color2, blob2 * 0.35);
+          color = mix(color, color3, blob3 * 0.3);
+          color += wave * 0.5;
         }
 
-        // 简化的边缘效果
-        float vignette = 1.0 - length(st - vec2(0.5)) * 0.3;
+        // 柔和的整体渐变
+        vec2 center = vec2(0.5);
+        float dist = length(st - center);
+        float vignette = 1.0 - smoothstep(0.3, 1.3, dist) * 0.3;
         color *= vignette;
 
-        gl_FragColor = vec4(color, 0.85);
+        gl_FragColor = vec4(color, 1.0);
       }
     `;
     
@@ -309,6 +305,8 @@ function BannerBackground() {
 
 function HomepageBanner({ performanceSettings }) {
   const {siteConfig} = useDocusaurusContext();
+  const { colorMode } = useColorMode();
+  const isDarkTheme = colorMode === 'dark';
   
   const handleScrollDown = () => {
     document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
@@ -322,9 +320,7 @@ function HomepageBanner({ performanceSettings }) {
       
       <div className={styles.bannerContainer}>
         <div className={styles.bannerContent}>
-          <div className={styles.bannerIcon}>
-            <div className={styles.bannerIconInner}>⚒️</div>
-          </div>
+          <img src={isDarkTheme ? "/img/logo_white.svg" : "/img/logo.svg"} alt="Logo" className={styles.bannerIcon} />
           <h1 className={styles.bannerTitle}>
             <span className={styles.bannerTitleMain}>Post</span>
             <span className={styles.bannerTitleSub}>Plugins</span>
