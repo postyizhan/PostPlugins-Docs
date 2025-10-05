@@ -1,5 +1,6 @@
 ---
 title: 方块
+sidebar_position: 1
 ---
 
 # 方块

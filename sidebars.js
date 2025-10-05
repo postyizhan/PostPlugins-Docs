@@ -50,6 +50,34 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'PostBits',
+      items: [
+        'PostBits/intro',
+        {
+          type: 'category',
+          label: '提供器',
+          items: [
+            'PostBits/provider/block',
+            'PostBits/provider/item',
+            'PostBits/provider/action',
+          ],
+        },
+        {
+          type: 'category',
+          label: '功能',
+          items: [
+            'PostBits/feature/chair',
+            'PostBits/feature/elevator',
+            'PostBits/feature/invedit',
+            'PostBits/feature/keybind',
+            'PostBits/feature/portabletools',
+            'PostBits/feature/utility',
+          ],
+        },
+      ],
+    },
   ],
 };
 

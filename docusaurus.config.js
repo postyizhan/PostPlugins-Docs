@@ -94,6 +94,12 @@ const config = {
             label: 'PostWarps',
           },
           {
+            type: 'doc',
+            docId: 'PostBits/intro',
+            position: 'left',
+            label: 'PostBits',
+          },
+          {
             type: 'dropdown',
             label: '插件',
             position: 'left',
@@ -109,6 +115,10 @@ const config = {
               {
                 label: 'PostWarps',
                 to: '/PostWarps/intro',
+              },
+              {
+                label: 'PostBits',
+                to: '/PostBits/intro',
               },
             ],
           },
@@ -151,6 +161,10 @@ const config = {
               {
                 label: 'PostWarps',
                 to: '/PostWarps/intro',
+              },
+              {
+                label: 'PostBits',
+                to: '/PostBits/intro',
               },
             ],
           },
