@@ -1,8 +1,0 @@
-{
-  "label": "提供器",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "PostBits 提供器系统，支持方块和物品提供器。"
-  }
-}
